@@ -1,8 +1,10 @@
 from django import forms
+
+from storage_api.models.project_models import Project
 from .models import ImageFile
 
 
-class ImagesForm(forms.ModelForm):
+class ImagesForm(forms.Form):
 
     files = forms.FileField(widget=forms.TextInput(attrs={
         "name": "images",
@@ -11,6 +13,6 @@ class ImagesForm(forms.ModelForm):
         "multiple": "True",
     }), label="")
 
-    class Meta:
-        model = ImageFile
-        fields = ['files']
+    project = forms.ModelChoiceField(
+        Project.objects.all()
+    )

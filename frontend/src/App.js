@@ -10,35 +10,31 @@ import { Gallery } from "react-grid-gallery";
 
 /* Import delle varie pagine */
 import CropDemo from "./pages/CropDemo";
+import HomePage from "./pages/HomePage";
+import ProjectOverviewPage from "./pages/ProjectOverviewPage";
+import DataGatheringPage from "./pages/DataGatheringPage";
 
 // Create a client
 const queryClient = new QueryClient()
 
 
 
-const PrivateRoute = ({children}) => {
-
-    const [cookies] = useCookies()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!cookies.auth) return navigate('/')
-    }, [cookies.auth, navigate]);
-
-    return(
-        <>{children}</>
-    )
-}
 
 
 function App() {
     return (
-        <CookiesProvider>
+        <CookiesProvider defaultSetOptions={{ path: '/' }}>
             <QueryClientProvider client={queryClient}>
                 <Router>
                     <Routes>
                         <Route path="/" element={
-                            <CropDemo/>
+                            <HomePage/>
+                        }/>
+                        <Route path="/prj" element={
+                            <ProjectOverviewPage/>
+                        }/>
+                        <Route path="/gather" element={
+                            <DataGatheringPage/>
                         }/>
                     </Routes>
                 </Router>

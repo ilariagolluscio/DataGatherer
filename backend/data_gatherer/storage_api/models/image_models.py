@@ -3,12 +3,18 @@ from storage_api.models.project_models import Project
 
 
 class Image(models.Model):
-    userId = models.IntegerField(unique=True)
+    userId = models.IntegerField()
     isDataGathered = models.BooleanField(default=False)
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE
     )
+
+    class Meta:
+        unique_together = ['project', 'userId']
+
+    def __str__(self):
+        return "img %d, prj %s" % (self.userId, self.project_id)
 
 
 class ImgCrop(models.Model):
@@ -22,3 +28,6 @@ class ImgCrop(models.Model):
         Image,
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return "crop %s of img %s" % (self.id, self.image_id)

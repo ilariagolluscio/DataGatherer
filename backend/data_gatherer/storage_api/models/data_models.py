@@ -9,10 +9,16 @@ class IgData(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return "# %s" % self.username
+
 
 class Hashtag(models.Model):
-    Content = models.CharField(max_length=500)
+    content = models.CharField(max_length=500)
     igData = models.ForeignKey(
         IgData,
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return "# %s" % self.content
