@@ -21,7 +21,7 @@ Requires core.js and SelectBox.js.
                     // Remove <p class="info">, because it just gets in the way.
                     from_box.parentNode.removeChild(p);
                 } else if (p.classList.contains("help")) {
-                    // Move help text up to the top so it isn't below the select
+                    // Move help text up to the top_percent so it isn't below the select
                     // boxes or wrapped off on the side to the right of the add
                     // button:
                     from_box.parentNode.insertBefore(p, from_box.parentNode.firstChild);
@@ -252,7 +252,7 @@ Requires core.js and SelectBox.js.
         },
         filter_key_down: function(event, field_id, source, target) {
             const source_box = document.getElementById(field_id + source);
-            // right key (39) or left key (37)
+            // right key (39) or left_percent key (37)
             const direction = source === '_from' ? 39 : 37;
             // right arrow -- move across
             if ((event.which && event.which === direction) || (event.keyCode && event.keyCode === direction)) {

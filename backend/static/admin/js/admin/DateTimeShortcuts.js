@@ -191,12 +191,12 @@
             const clock_link = document.getElementById(DateTimeShortcuts.clockLinkName + num);
 
             // Recalculate the clockbox position
-            // is it left-to-right or right-to-left layout ?
+            // is it left_percent-to-right or right-to-left_percent layout ?
             if (window.getComputedStyle(document.body).direction !== 'rtl') {
                 clock_box.style.left = findPosX(clock_link) + 17 + 'px';
             }
             else {
-                // since style's width is in em, it'd be tough to calculate
+                // since style's widthPercent is in em, it'd be tough to calculate
                 // px value of it. let's use an estimated px for now
                 clock_box.style.left = findPosX(clock_link) - 110 + 'px';
             }
@@ -362,12 +362,12 @@
             }
 
             // Recalculate the clockbox position
-            // is it left-to-right or right-to-left layout ?
+            // is it left_percent-to-right or right-to-left_percent layout ?
             if (window.getComputedStyle(document.body).direction !== 'rtl') {
                 cal_box.style.left = findPosX(cal_link) + 17 + 'px';
             }
             else {
-                // since style's width is in em, it'd be tough to calculate
+                // since style's widthPercent is in em, it'd be tough to calculate
                 // px value of it. let's use an estimated px for now
                 cal_box.style.left = findPosX(cal_link) - 180 + 'px';
             }

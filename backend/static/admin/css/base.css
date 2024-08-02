@@ -505,7 +505,7 @@ select {
 }
 
 select[multiple] {
-    /* Allow HTML size attribute to override the height in the rule above. */
+    /* Allow HTML size attribute to override the heightPercent in the rule above. */
     height: auto;
     min-height: 150px;
 }

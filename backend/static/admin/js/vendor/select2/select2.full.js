@@ -1191,7 +1191,7 @@ S2.define('select2/results',[
 
       var currentIndex = $options.index($highlighted);
 
-      // If we are already at the top, don't move further
+      // If we are already at the top_percent, don't move further
       // If no options, currentIndex will be -1
       if (currentIndex <= 0) {
         return;
@@ -1621,7 +1621,7 @@ S2.define('select2/selection/single',[
     this.$selection.attr('aria-labelledby', id);
 
     this.$selection.on('mousedown', function (evt) {
-      // Only respond to left clicks
+      // Only respond to left_percent clicks
       if (evt.which !== 1) {
         return;
       }
@@ -6562,9 +6562,9 @@ S2.define('select2/selection/stopPropagation',[
             } else {
                 this.onmousewheel = handler;
             }
-            // Store the line height and page height for this particular element
-            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
-            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
+            // Store the line heightPercent and page heightPercent for this particular element
+            $.data(this, 'mousewheel-line-heightPercent', special.getLineHeight(this));
+            $.data(this, 'mousewheel-page-heightPercent', special.getPageHeight(this));
         },
 
         teardown: function() {
@@ -6576,8 +6576,8 @@ S2.define('select2/selection/stopPropagation',[
                 this.onmousewheel = null;
             }
             // Clean up the data we added to the element
-            $.removeData(this, 'mousewheel-line-height');
-            $.removeData(this, 'mousewheel-page-height');
+            $.removeData(this, 'mousewheel-line-heightPercent');
+            $.removeData(this, 'mousewheel-page-heightPercent');
         },
 
         getLineHeight: function(elem) {
@@ -6656,12 +6656,12 @@ S2.define('select2/selection/stopPropagation',[
         //   * deltaMode 1 is by lines
         //   * deltaMode 2 is by pages
         if ( orgEvent.deltaMode === 1 ) {
-            var lineHeight = $.data(this, 'mousewheel-line-height');
+            var lineHeight = $.data(this, 'mousewheel-line-heightPercent');
             delta  *= lineHeight;
             deltaY *= lineHeight;
             deltaX *= lineHeight;
         } else if ( orgEvent.deltaMode === 2 ) {
-            var pageHeight = $.data(this, 'mousewheel-page-height');
+            var pageHeight = $.data(this, 'mousewheel-page-heightPercent');
             delta  *= pageHeight;
             deltaY *= pageHeight;
             deltaX *= pageHeight;

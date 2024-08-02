@@ -14,9 +14,21 @@ erDiagram
         int project FK
     }
 
-    IG_DATA {
-        string Username
+    IMG_DATA {
+        string tag
+        string content
         int image FK
+    }
+
+    USER {
+        string Description
+        string Username FK
+    }
+    
+    USER_HASHTAG_USE {
+        int amount 
+        int user_id FK
+        int hashtag_id FK 
     }
 
     HASHTAG {
@@ -36,8 +48,11 @@ erDiagram
 
 
     PROJECT ||--|{ IMAGE : "has"
-    IMAGE ||--|o IG_DATA : "has"
-    IG_DATA ||--o{ HASHTAG : "has"
+    IMAGE ||--|o IMG_DATA : "has"
     IMAGE ||--o{ IMG_CROP : "has"
+    
+    USER_HASHTAG_USE ||--|| USER : "has"
+    USER_HASHTAG_USE ||--|| HASHTAG : "has"
+    
 
 ````

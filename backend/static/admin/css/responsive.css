@@ -21,7 +21,7 @@ input[type="submit"], button {
         font-size: 0.75rem;
     }
 
-    /* Layout */
+    /* SingleImgAnalysisLayout */
 
     #container {
         min-width: 0;
@@ -462,7 +462,7 @@ input[type="submit"], button {
 /* Mobile */
 
 @media (max-width: 767px) {
-    /* Layout */
+    /* SingleImgAnalysisLayout */
 
     #header, #content, #footer {
         padding: 15px;

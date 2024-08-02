@@ -4,15 +4,14 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import {CookiesProvider, useCookies} from 'react-cookie';
-import {useEffect} from "react";
-
-import { Gallery } from "react-grid-gallery";
 
 /* Import delle varie pagine */
 import CropDemo from "./pages/CropDemo";
 import HomePage from "./pages/HomePage";
 import ProjectOverviewPage from "./pages/ProjectOverviewPage";
-import DataGatheringPage from "./pages/DataGatheringPage";
+import DataGatheringPage from "./pages/data_gatering_page/DataGatheringPage";
+import DataParsingPage from "./pages/data_parsing_page/DataParsingPage";
+import DataEditingPage from "./pages/data_editing_page/DataEditingPage";
 
 // Create a client
 const queryClient = new QueryClient()
@@ -35,6 +34,12 @@ function App() {
                         }/>
                         <Route path="/gather" element={
                             <DataGatheringPage/>
+                        }/>
+                        <Route path="/parse" element={
+                            <DataParsingPage/>
+                        }/>
+                        <Route path="/edit" element={
+                            <DataEditingPage/>
                         }/>
                     </Routes>
                 </Router>

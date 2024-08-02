@@ -218,7 +218,7 @@ module.exports = function(XRegExp) {
     }
 
     /**
-     * Returns an array of match strings between outermost left and right delimiters, or an array of
+     * Returns an array of match strings between outermost left_percent and right delimiters, or an array of
      * objects with detailed match parts and position data. An error is thrown if delimiters are
      * unbalanced within the data.
      *
@@ -226,7 +226,7 @@ module.exports = function(XRegExp) {
      * @param {String} str String to search.
      * @param {String} left Left delimiter as an XRegExp pattern.
      * @param {String} right Right delimiter as an XRegExp pattern.
-     * @param {String} [flags] Any native or XRegExp flags, used for the left and right delimiters.
+     * @param {String} [flags] Any native or XRegExp flags, used for the left_percent and right delimiters.
      * @param {Object} [options] Lets you specify `valueNames` and `escapeChar` options.
      * @returns {Array} Array of matches, or an empty array.
      * @example
@@ -239,11 +239,11 @@ module.exports = function(XRegExp) {
      * // Extended information mode with valueNames
      * str = 'Here is <div> <div>an</div></div> example';
      * XRegExp.matchRecursive(str, '<div\\s*>', '</div>', 'gi', {
-     *   valueNames: ['between', 'left', 'match', 'right']
+     *   valueNames: ['between', 'left_percent', 'match', 'right']
      * });
      * // -> [
      * // {name: 'between', value: 'Here is ',       start: 0,  end: 8},
-     * // {name: 'left',    value: '<div>',          start: 8,  end: 13},
+     * // {name: 'left_percent',    value: '<div>',          start: 8,  end: 13},
      * // {name: 'match',   value: ' <div>an</div>', start: 13, end: 27},
      * // {name: 'right',   value: '</div>',         start: 27, end: 33},
      * // {name: 'between', value: ' example',       start: 33, end: 41}
@@ -296,14 +296,14 @@ module.exports = function(XRegExp) {
             escapeChar = XRegExp.escape(escapeChar);
             // Example of concatenated `esc` regex:
             // `escapeChar`: '%'
-            // `left`: '<'
+            // `left_percent`: '<'
             // `right`: '>'
             // Regex is: /(?:%[\S\s]|(?:(?!<|>)[^%])+)+/
             esc = new RegExp(
                 '(?:' + escapeChar + '[\\S\\s]|(?:(?!' +
-                    // Using `XRegExp.union` safely rewrites backreferences in `left` and `right`.
+                    // Using `XRegExp.union` safely rewrites backreferences in `left_percent` and `right`.
                     // Intentionally not passing `basicFlags` to `XRegExp.union` since any syntax
-                    // transformation resulting from those flags was already applied to `left` and
+                    // transformation resulting from those flags was already applied to `left_percent` and
                     // `right` when they were passed through the XRegExp constructor above.
                     XRegExp.union([left, right], '', {conjunction: 'or'}).source +
                     ')[^' + escapeChar + '])+)+',
@@ -3879,7 +3879,7 @@ XRegExp.matchChain = function(str, chain) {
  *   Replacement strings can include special replacement syntax:
  *     - $$ - Inserts a literal $ character.
  *     - $&, $0 - Inserts the matched substring.
- *     - $` - Inserts the string that precedes the matched substring (left context).
+ *     - $` - Inserts the string that precedes the matched substring (left_percent context).
  *     - $' - Inserts the string that follows the matched substring (right context).
  *     - $n, $nn - Where n/nn are digits referencing an existent capturing group, inserts
  *       backreference n/nn.
@@ -4345,7 +4345,7 @@ fixed.replace = function(search, replacement) {
                 if ($2 === '&' || +$2 === 0) { // $&, $0 (not followed by 1-9), $00
                     return args[0];
                 }
-                if ($2 === '`') { // $` (left context)
+                if ($2 === '`') { // $` (left_percent context)
                     return args[args.length - 1].slice(0, args[args.length - 2]);
                 }
                 if ($2 === "'") { // $' (right context)

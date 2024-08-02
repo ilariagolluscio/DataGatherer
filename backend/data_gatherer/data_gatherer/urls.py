@@ -15,14 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from functions_api import local_urls as fx_urls
+from storage_api import local_urls as storage_urls
 from storage_api.admin import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('fx_api/', include(fx_urls))
+    path('fx_api/', include(fx_urls)),
+    path('storage_api/', include(storage_urls)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

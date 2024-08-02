@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {imageSelector, singleSelect} from "../../slices/gallerySlice";
+import {defaultBaseUrl} from "../../global_vars";
+import {useMutation} from "@tanstack/react-query";
+import {deleteImage} from "../../queries/deleteImage";
 
-const ImageBox = ({userId, isDataGathered}) => {
+const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId}) => {
 
     let specificStyle = {
         height: "140px",
@@ -11,6 +11,16 @@ const ImageBox = ({userId, isDataGathered}) => {
     }
 
 
+    const {mutate: deleteMutate} = useMutation({
+        mutationFn: deleteImage,
+        retry: 1,
+        onSuccess: () => window.location.reload(),
+        onError: (error) => alert("Errore di connessione: " + error.message)
+    })
+
+    let base = process.env.REACT_APP_API_URL || defaultBaseUrl
+    let source = base + imageFileUrl
+
     return (
         <div className={`rounded-3 m-3 ${isDataGathered ? "bg-success-subtle" : "bg-danger-subtle"}` }>
 
@@ -18,7 +28,7 @@ const ImageBox = ({userId, isDataGathered}) => {
 
                 <div className={"d-flex justify-content-center w-100"}>
                     <div style={specificStyle}>
-                        img
+                        <img src={source} className={"h-100 w-100"} alt={"immagine da lavoro"}/>
                     </div>
                 </div>
 
@@ -28,8 +38,13 @@ const ImageBox = ({userId, isDataGathered}) => {
                 </div>
 
                 <div className={"d-flex w-100 justify-content-center"}>
-                    <a href="#" className="btn btn-primary m-2">VIEW</a>
-                    <a href="#" className="btn btn-danger m-2">DEL</a>
+                    <button
+                        disabled={isDataGathered}
+                        onClick={() => window.location.href = `/gather?img_id=${imgId}`}
+                        className="btn btn-primary m-2" >ANYZ
+                    </button>
+
+                    <button href="#" className="btn btn-danger m-2" onClick={() => deleteMutate(imgId)}>DEL</button>
                 </div>
             </div>
         </div>

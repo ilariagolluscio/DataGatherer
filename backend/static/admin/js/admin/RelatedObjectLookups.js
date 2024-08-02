@@ -39,7 +39,7 @@
         if (add_popup) {
             href.searchParams.set('_popup', 1);
         }
-        const win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+        const win = window.open(href, name, 'heightPercent=500,widthPercent=800,resizable=yes,scrollbars=yes');
         relatedWindows.push(win);
         win.focus();
         return false;

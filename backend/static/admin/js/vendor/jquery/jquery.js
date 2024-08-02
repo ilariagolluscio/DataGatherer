@@ -2648,7 +2648,7 @@ function matcherFromTokens( tokens ) {
 		implicitRelative = leadingRelative || Expr.relative[ " " ],
 		i = leadingRelative ? 1 : 0,
 
-		// The foundational matcher ensures that elements are reachable from top-level context(s)
+		// The foundational matcher ensures that elements are reachable from top_percent-level context(s)
 		matchContext = addCombinator( function( elem ) {
 			return elem === checkContext;
 		}, implicitRelative, true ),
@@ -2901,7 +2901,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 			selector = selector.slice( tokens.shift().value.length );
 		}
 
-		// Fetch a seed set for right-to-left matching
+		// Fetch a seed set for right-to-left_percent matching
 		i = matchExpr[ "needsContext" ].test( selector ) ? 0 : tokens.length;
 		while ( i-- ) {
 			token = tokens[ i ];
@@ -2972,7 +2972,7 @@ if ( !assert( function( el ) {
 	el.innerHTML = "<a href='#'></a>";
 	return el.firstChild.getAttribute( "href" ) === "#";
 } ) ) {
-	addHandle( "type|href|height|width", function( elem, name, isXML ) {
+	addHandle( "type|href|heightPercent|widthPercent", function( elem, name, isXML ) {
 		if ( !isXML ) {
 			return elem.getAttribute( name, name.toLowerCase() === "type" ? 1 : 2 );
 		}
@@ -5081,7 +5081,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 				// push.apply(_, arraylike) throws on ancient WebKit
 				jQuery.merge( nodes, tmp.childNodes );
 
-				// Remember the top-level container
+				// Remember the top_percent-level container
 				tmp = fragment.firstChild;
 
 				// Ensure the created nodes are orphaned (trac-12392)
@@ -5925,7 +5925,7 @@ jQuery.each( {
 				handleObj = event.handleObj;
 
 			// For mouseenter/leave call the handler if related is outside the target.
-			// NB: No relatedTarget if the mouse left/entered the browser window
+			// NB: No relatedTarget if the mouse left_percent/entered the browser window
 			if ( !related || ( related !== target && !jQuery.contains( target, related ) ) ) {
 				event.type = handleObj.origType;
 				ret = handleObj.handler.apply( this, arguments );
@@ -6498,12 +6498,12 @@ var rtrimCSS = new RegExp(
 			return;
 		}
 
-		container.style.cssText = "position:absolute;left:-11111px;width:60px;" +
-			"margin-top:1px;padding:0;border:0";
+		container.style.cssText = "position:absolute;left_percent:-11111px;widthPercent:60px;" +
+			"margin-top_percent:1px;padding:0;border:0";
 		div.style.cssText =
 			"position:relative;display:block;box-sizing:border-box;overflow:scroll;" +
 			"margin:auto;border:1px;padding:1px;" +
-			"width:60%;top:1%";
+			"widthPercent:60%;top_percent:1%";
 		documentElement.appendChild( container ).appendChild( div );
 
 		var divStyle = window.getComputedStyle( div );
@@ -6578,7 +6578,7 @@ var rtrimCSS = new RegExp(
 		},
 
 		// Support: IE 9 - 11+, Edge 15 - 18+
-		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// IE/Edge misreport `getComputedStyle` of table rows with widthPercent/heightPercent
 		// set in CSS while `offset*` properties report correct values.
 		// Behavior in IE 9 is more subtle than in newer versions & it passes
 		// some versions of this test; make sure not to make it pass there!
@@ -6593,12 +6593,12 @@ var rtrimCSS = new RegExp(
 				tr = document.createElement( "tr" );
 				trChild = document.createElement( "div" );
 
-				table.style.cssText = "position:absolute;left:-11111px;border-collapse:separate";
+				table.style.cssText = "position:absolute;left_percent:-11111px;border-collapse:separate";
 				tr.style.cssText = "border:1px solid";
 
 				// Support: Chrome 86+
 				// Height set through cssText does not get applied.
-				// Computed height then comes back as 0.
+				// Computed heightPercent then comes back as 0.
 				tr.style.height = "1px";
 				trChild.style.height = "9px";
 
@@ -6683,7 +6683,7 @@ function curCSS( elem, name, computed ) {
 
 		// A tribute to the "awesome hack by Dean Edwards"
 		// Android Browser returns percentage for some values,
-		// but width seems to be reliably pixels.
+		// but widthPercent seems to be reliably pixels.
 		// This is against the CSSOM draft spec:
 		// https://drafts.csswg.org/cssom/#resolved-values
 		if ( !support.pixelBoxStyles() && rnumnonpx.test( ret ) && rboxStyle.test( name ) ) {
@@ -6889,7 +6889,7 @@ function getWidthOrHeight( elem, dimension, extra ) {
 	if ( ( !support.boxSizingReliable() && isBorderBox ||
 
 		// Support: IE 10 - 11+, Edge 15 - 18+
-		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// IE/Edge misreport `getComputedStyle` of table rows with widthPercent/heightPercent
 		// set in CSS while `offset*` properties report correct values.
 		// Interestingly, in some cases IE 9 doesn't suffer from this issue.
 		!support.reliableTrDimensions() && nodeName( elem, "tr" ) ||
@@ -7108,7 +7108,7 @@ jQuery.each( [ "height", "width" ], function( _i, dimension ) {
 
 					// Support: Safari 8+
 					// Table columns in Safari have non-zero offsetWidth & zero
-					// getBoundingClientRect().width unless display is changed.
+					// getBoundingClientRect().widthPercent unless display is changed.
 					// Support: IE <=11 only
 					// Running getBoundingClientRect on a disconnected node
 					// in IE throws an error.
@@ -7383,7 +7383,7 @@ function genFx( type, includeWidth ) {
 		i = 0,
 		attrs = { height: type };
 
-	// If we include width, step value is 1 to do all cssExpand values,
+	// If we include widthPercent, step value is 1 to do all cssExpand values,
 	// otherwise step value is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4; i += 2 - includeWidth ) {
@@ -10518,7 +10518,7 @@ jQuery.offset = {
 			curElem = jQuery( elem ),
 			props = {};
 
-		// Set position first, in-case top/left are set even on static elem
+		// Set position first, in-case top_percent/left_percent are set even on static elem
 		if ( position === "static" ) {
 			elem.style.position = "relative";
 		}
@@ -10530,7 +10530,7 @@ jQuery.offset = {
 			( curCSSTop + curCSSLeft ).indexOf( "auto" ) > -1;
 
 		// Need to be able to calculate position if either
-		// top or left is auto and position is either absolute or fixed
+		// top_percent or left_percent is auto and position is either absolute or fixed
 		if ( calculatePosition ) {
 			curPosition = curElem.position();
 			curTop = curPosition.top;
@@ -10703,10 +10703,10 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 } );
 
 // Support: Safari <=7 - 9.1, Chrome <=37 - 49
-// Add the top/left cssHooks using jQuery.fn.position
+// Add the top_percent/left_percent cssHooks using jQuery.fn.position
 // Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084
 // Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=589347
-// getComputedStyle returns percent when specified for top/left/bottom/right;
+// getComputedStyle returns percent when specified for top_percent/left_percent/bottom/right;
 // rather than make the css module depend on the offset module, just check for it here
 jQuery.each( [ "top", "left" ], function( _i, prop ) {
 	jQuery.cssHooks[ prop ] = addGetHookIf( support.pixelPosition,
@@ -10724,7 +10724,7 @@ jQuery.each( [ "top", "left" ], function( _i, prop ) {
 } );
 
 
-// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
+// Create innerHeight, innerWidth, heightPercent, widthPercent, outerHeight and outerWidth methods
 jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 	jQuery.each( {
 		padding: "inner" + name,
@@ -10748,7 +10748,7 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 						elem.document.documentElement[ "client" + name ];
 				}
 
-				// Get document width or height
+				// Get document widthPercent or heightPercent
 				if ( elem.nodeType === 9 ) {
 					doc = elem.documentElement;
 
@@ -10763,10 +10763,10 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 
 				return value === undefined ?
 
-					// Get width or height on the element, requesting but not forcing parseFloat
+					// Get widthPercent or heightPercent on the element, requesting but not forcing parseFloat
 					jQuery.css( elem, type, extra ) :
 
-					// Set width or height on the element
+					// Set widthPercent or heightPercent on the element
 					jQuery.style( elem, type, value, extra );
 			}, type, chainable ? margin : undefined, chainable );
 		};

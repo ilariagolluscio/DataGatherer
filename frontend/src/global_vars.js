@@ -1,0 +1,1 @@
+export const defaultBaseUrl = "http://localhost:8000"

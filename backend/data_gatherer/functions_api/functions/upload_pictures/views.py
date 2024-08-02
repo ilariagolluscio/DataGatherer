@@ -1,3 +1,6 @@
+import os
+
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 from storage_api.models.project_models import Project
@@ -19,13 +22,17 @@ def fileupload(request):
         files = request.FILES.getlist('files')
         project = Project.objects.get(pk=request.POST['project'])
         for file in files:
+            entity:Image = Image.objects.filter(project=project).order_by('userId').last()
+            value = 1
+            if entity is not None:
+                value = entity.userId +1
             image = Image(
-                userId=Image.objects.filter(project=project).count() + 1,
+                userId=value,
                 project=project
             )
             image.save()
             image_ins = ImageFile(file=file, referencesImage=image)
             image_ins.save()
-        return redirect('index')
+        return redirect(os.environ.get("REACT_URL", default="http://localhost:3000"))
     context = {'form': form}
     return render(request, "upload.html", context)

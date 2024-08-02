@@ -1,26 +1,46 @@
 import ImageBox from "./ImageBox";
-import {useEffect, useLayoutEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {fillSelectedArrayWithNFalseValues, selectAll, selectedSelector} from "../../slices/gallerySlice";
-
-const Gallery = () => {
-    const reduxSelected = useSelector(selectedSelector)
+import {useQuery} from "@tanstack/react-query";
+import fetchProjects from "../../queries/fetchProjects";
+import fetchImages from "../../queries/fetchImages";
 
 
-    let list = Array(100).fill(1).map((n, i) => n + i)
+const Gallery = ({prjId}) => {
 
-    const handleSelectAll = () => {
+    const endpoint = `/storage_api/images/?project=${prjId}`
 
-    }
+    const { data, isError, error, isSuccess, isFetching} = useQuery({
+        queryKey: ['get_scenario', {endpoint}],
+        queryFn: () => fetchImages(prjId),
+    });
 
-    return(
+    if (isFetching) return(
         <div>
+            Caricamento...
+        </div>
+    )
 
+    if (isError) return(
+        <div>
+            Errore! {error.message}
+        </div>
+    )
+
+    if (isSuccess) return(
+        <div>
+            <div className={"my-3"}>
+                Nel progetto ci sono {data.length} immagini.
+            </div>
 
             <div className={"d-flex flex-wrap"}>
                 {
-                    list.map(i => (
-                        <ImageBox key={i} selectorId={i} userId={i}/>
+                    data.map((child, i) => (
+                        <ImageBox
+                            key={i}
+                            userId={child.userId}
+                            imageFileUrl={child.image_file_url}
+                            isDataGathered={child.isDataGathered}
+                            imgId={child.id}
+                        />
                     ))
                 }
             </div>
