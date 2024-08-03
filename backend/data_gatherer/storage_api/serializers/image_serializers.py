@@ -4,6 +4,11 @@ from storage_api.models.image_models import *
 
 class ImageSerializer(serializers.ModelSerializer):
     image_file_url = serializers.SerializerMethodField()
+    is_similar_to_user_id = serializers.SerializerMethodField()
+
+    def get_is_similar_to_user_id(self, obj:Image):
+        if obj.isSimilarTo is None: return None
+        return obj.isSimilarTo.userId
 
     def get_image_file_url(self, obj: Image):
         return obj.imagefile.file.url

@@ -31,9 +31,10 @@ const DataGatheringPage = () => {
     const [crop, setCrop] = useState()
     const [completedCrop, setCompletedCrop] = useState()
     const [percentCrop, setPercentCrop] = useState(null)
-    const [isCropEnabled, setIsCropEnabled] = useState(false)
+    const [isCropEnabled, setIsCropEnabled] = useState(false);
 
     const imgRef = useRef(null)
+
 
 
     const { data: imgData, error, isFetching} = useQuery({
@@ -122,7 +123,7 @@ const DataGatheringPage = () => {
 
             bottomChildren={
                 <div className={"d-flex justify-content-center h-100 align-items-center bg-dark-subtle w-100"}>
-                    <button style={{width: "300px"}} className={"btn btn-primary my-2 mx-2"}
+                    <button style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
                             onClick={() => {window.location.href = `/edit?img_id=${imageId}`}}
                     >
                         Avanti

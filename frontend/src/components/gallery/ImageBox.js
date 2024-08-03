@@ -1,8 +1,11 @@
 import {defaultBaseUrl} from "../../global_vars";
 import {useMutation} from "@tanstack/react-query";
 import {deleteImage} from "../../queries/deleteImage";
+import {useRef} from "react";
 
-const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId}) => {
+const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id}) => {
+
+    const mainRef = useRef(null);
 
     let specificStyle = {
         height: "140px",
@@ -14,15 +17,25 @@ const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId}) => {
     const {mutate: deleteMutate} = useMutation({
         mutationFn: deleteImage,
         retry: 1,
-        onSuccess: () => window.location.reload(),
+        onSuccess: () => (
+            mainRef.current.style.display="none"
+        ),
         onError: (error) => alert("Errore di connessione: " + error.message)
     })
 
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
     let source = base + imageFileUrl
 
+    const handleDeleteImage = () => {
+        if (isDataGathered){
+            if (!window.confirm("Si vuole davvero eliminare l'immagine? Verranno eliminate anche tutte le " +
+                "connessioni utente - hashtags.")) return
+        }
+        deleteMutate(imgId)
+    }
+
     return (
-        <div className={`rounded-3 m-3 ${isDataGathered ? "bg-success-subtle" : "bg-danger-subtle"}` }>
+        <div ref={mainRef} className={`rounded-3 m-3 ${isDataGathered ? "bg-success-subtle" : "bg-danger-subtle"}` }>
 
             <div className={"m-2"} >
 
@@ -37,6 +50,7 @@ const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId}) => {
                     {userId}
                 </div>
 
+
                 <div className={"d-flex w-100 justify-content-center"}>
                     <button
                         disabled={isDataGathered}
@@ -44,8 +58,16 @@ const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId}) => {
                         className="btn btn-primary m-2" >ANYZ
                     </button>
 
-                    <button href="#" className="btn btn-danger m-2" onClick={() => deleteMutate(imgId)}>DEL</button>
+                    <button href="#" className="btn btn-danger m-2" onClick={handleDeleteImage}>DEL</button>
                 </div>
+
+                {
+                    is_similar_to_user_id ?
+                        <div className={"w-100 text-center alert p-1 alert-warning"}>
+                            Simile a {is_similar_to_user_id}
+                        </div>
+                        :<></>
+                }
             </div>
         </div>
     )

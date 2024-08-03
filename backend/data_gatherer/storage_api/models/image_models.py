@@ -1,15 +1,20 @@
 from django.db import models
 
+from functions_api.functions.upload_pictures.logic import check_similarity_between_project_images
 from services.ocr_services import read_text_from_img
-from storage_api.models.project_models import Project
 
 
 class Image(models.Model):
     userId = models.IntegerField()
     isDataGathered = models.BooleanField(default=False)
     project = models.ForeignKey(
-        Project,
+        'Project',
         on_delete=models.CASCADE
+    )
+    isSimilarTo = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True
     )
 
     class Meta:
@@ -44,6 +49,11 @@ class ImgCrop(models.Model):
             self.widthPercent,
             self.heightPercent
         )
+
+        ImgCrop.objects.filter(
+            image=self.image,
+            fieldName=self.fieldName,
+        ).delete()
 
         if self.isDefault:
             queryset = ImgCrop.objects.filter(isDefault=True, fieldName=self.fieldName)

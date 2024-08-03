@@ -27,4 +27,7 @@ class ImgCropViewSet(CompleteModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
+    def destroy(self, request, *args, **kwargs):
+        super().destroy(request, *args, **kwargs)
+
 

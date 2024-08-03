@@ -27,7 +27,7 @@ const Gallery = ({prjId}) => {
 
     if (isSuccess) return(
         <div>
-            <div className={"my-3"}>
+            <div className={"my-1"}>
                 Nel progetto ci sono {data.length} immagini.
             </div>
 
@@ -40,6 +40,7 @@ const Gallery = ({prjId}) => {
                             imageFileUrl={child.image_file_url}
                             isDataGathered={child.isDataGathered}
                             imgId={child.id}
+                            is_similar_to_user_id={child.is_similar_to_user_id}
                         />
                     ))
                 }

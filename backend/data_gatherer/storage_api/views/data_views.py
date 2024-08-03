@@ -9,14 +9,14 @@ class HashtagViewSet(CompleteModelViewSet):
     queryset = Hashtag.objects.all()
     serializer_class = HashtagSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ['project', 'image']
+    filterset_fields = ['project', 'createdFromImage']
 
 
 class IGUserViewSet(CompleteModelViewSet):
     queryset = IGUser.objects.all()
     serializer_class = IGUserSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ['project', 'image']
+    filterset_fields = ['project', 'createdFromImage']
 
 
 class UserHashtagUseViewSet(CompleteModelViewSet):

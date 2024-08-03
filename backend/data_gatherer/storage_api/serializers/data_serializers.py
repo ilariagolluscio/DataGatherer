@@ -21,6 +21,9 @@ class IGUserSerializer(serializers.ModelSerializer):
 
 
 class UserHashtagUseSerializer(serializers.ModelSerializer):
+    igUser = IGUserSerializer()
+    hashtag = HashtagSerializer()
+
     class Meta:
         model = UserHashtagUse
         fields = '__all__'

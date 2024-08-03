@@ -74,3 +74,5 @@ class UserHashtagUse(models.Model):
 
     class Meta:
         unique_together = ['image', 'hashtag', 'igUser', 'project']
+
+

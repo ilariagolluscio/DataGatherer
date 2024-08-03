@@ -10,7 +10,7 @@ import CropDemo from "./pages/CropDemo";
 import HomePage from "./pages/HomePage";
 import ProjectOverviewPage from "./pages/ProjectOverviewPage";
 import DataGatheringPage from "./pages/data_gatering_page/DataGatheringPage";
-import DataParsingPage from "./pages/data_parsing_page/DataParsingPage";
+import DataStructuringPage from "./pages/data_structuring_page/DataStructuringPage";
 import DataEditingPage from "./pages/data_editing_page/DataEditingPage";
 
 // Create a client
@@ -35,8 +35,8 @@ function App() {
                         <Route path="/gather" element={
                             <DataGatheringPage/>
                         }/>
-                        <Route path="/parse" element={
-                            <DataParsingPage/>
+                        <Route path="/structure" element={
+                            <DataStructuringPage/>
                         }/>
                         <Route path="/edit" element={
                             <DataEditingPage/>

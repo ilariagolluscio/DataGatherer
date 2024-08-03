@@ -24,6 +24,7 @@ def read_text_from_img(img_path, top_percent, left_percent, width_percent, heigh
 
     print(text)
 
-    if text is "": return "N.A."
+    if text == "":
+        return "N.A."
 
     return text[:-1]

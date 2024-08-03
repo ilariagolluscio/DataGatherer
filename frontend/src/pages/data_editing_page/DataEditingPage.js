@@ -12,6 +12,8 @@ import fetchImageCropData from "../../queries/fetchImageCropData";
 import {useRef, useState} from "react";
 import {createProject} from "../../queries/createProject";
 import {saveReviewedData} from "../../queries/saveReviewedData";
+import {extendNetworkFromImage} from "../../queries/extendNetworkFromImage";
+
 
 const DataEditingPage = () => {
 
@@ -39,8 +41,33 @@ const DataEditingPage = () => {
         onError: (error) => alert("Errore! " + error.message)
     })
 
+    const {mutate: structureDataMutation} = useMutation({
+        mutationFn: extendNetworkFromImage,
+        retry: 1,
+        onSuccess: () => {
+            window.location.href = `/structure?img_id=${imageId}`
+        },
+        onError: (error) => {
+            console.log(error)
+            alert("Errore nella creazione dei dati strutturati: " + JSON.stringify(error.body))
+        }
+    })
+
+    const handleForward = () => {
+        structureDataMutation({targetImage: imageId})
+    }
 
     const handleSaveData = () => {
+        if (usernameTARef.current.value === ""){
+            alert("Non è possibile continuare se non è definito un nome utente!")
+            return
+        }
+
+        if (!hashtagTARef.current.value.includes('#')){
+            alert("Non è possibile continuare se non sono definiti hashtags!")
+            return
+        }
+
         saveReviewedDataMutation({
             "usernameImgCrop": userCropId,
             "hashtagImgCrop": hashtagCropId,
@@ -113,12 +140,14 @@ const DataEditingPage = () => {
 
             bottomChildren={
                 <div className={"d-flex justify-content-center h-100 align-items-center bg-dark-subtle w-100"}>
-                    <button style={{width: "300px"}} className={"btn btn-primary my-2 mx-2"}
+                    <button style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
                         onClick={handleSaveData}
                     >
                         Salva Dati
                     </button>
-                    <button disabled={!hasDataBeenSaved} style={{width: "300px"}} className={"btn btn-primary my-2 mx-2"}>
+                    <button disabled={!hasDataBeenSaved} style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
+                            onClick={handleForward}
+                    >
                         Prosegui
                     </button>
                 </div>
