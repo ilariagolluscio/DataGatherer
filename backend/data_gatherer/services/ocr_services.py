@@ -3,7 +3,7 @@ from pytesseract import pytesseract
 
 
 def read_text_from_img(img_path, top_percent, left_percent, width_percent, height_percent):
-    path_to_tesseract = "/usr/local/bin/tesseract"
+    path_to_tesseract = "tesseract"
     image_path = img_path
 
     print(image_path)

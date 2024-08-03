@@ -7,7 +7,11 @@ import {createProject} from "../queries/createProject";
 import {defaultBaseUrl} from "../global_vars";
 
 const HomePage = () => {
+    console.log(
+        `url: ${process.env.REACT_APP_API_URL}`
+    )
 
+    console.log("efoiwrngwopirm")
 
     const { data: projects, error} = useQuery({
         queryKey: ['get_scenario'],

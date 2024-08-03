@@ -20,16 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rpkd=cg)22a^p0h__6z3j7%%r==90r_+c$c_k6bx)=%+&gjuy-'
+SECRET_KEY = os.environ.get("SECRET_KEY", default="4934h3iwrwogi543g@4t938euh3")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default='127.0.0.1 localhost').split(" ")
 
 
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS',
-                                      default='http://localhost:3000').split(" ")
+                                      default='http://localhost:3000 http://127.0.0.1:3000').split(" ")
 CORS_ALLOW_HEADERS = [
     'Accept',
     'Accept-Encoding',
@@ -97,12 +97,24 @@ WSGI_APPLICATION = 'data_gatherer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('SQL_ENGINE') is not None:
+    DATABASES = {
+        "default": {
+            "ENGINE": os.environ.get("SQL_ENGINE", default="django.db.backends.sqlite3"),
+            "NAME": os.environ.get("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
+            "USER": os.environ.get("SQL_USER", default="user"),
+            "PASSWORD": os.environ.get("SQL_PASSWORD", default="password"),
+            "HOST": os.environ.get("SQL_HOST", default="localhost"),
+            "PORT": os.environ.get("SQL_PORT", default="5432"),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -149,4 +161,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = "../static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = os.environ.get("MEDIA_PATH", default='/media/')
