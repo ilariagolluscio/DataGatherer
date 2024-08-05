@@ -120,10 +120,9 @@ const DataEditingPage = () => {
                         title={"Username"}
                         alreadyExists={false}
                         imgId={imageId}
-                        rows={2}
                         textAreaRef={usernameTARef}
                         setCropId={setUserCropId}
-
+                        rows={4}
                     />
 
                     <DataAnalysisCard
@@ -132,6 +131,9 @@ const DataEditingPage = () => {
                         imgId={imageId}
                         textAreaRef={hashtagTARef}
                         setCropId={setHashtagCropId}
+                        infoText={"Tutti gli hashtags verranno creati a lettere minuscole e la " +
+                            "punteggiatura, all'interno o alla fine degli hashtags " +
+                            "(!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~) non verrà considerata"}
                     />
 
                 </div>

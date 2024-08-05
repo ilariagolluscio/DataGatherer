@@ -3,7 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import fetchImageCropData from "../../queries/fetchImageCropData";
 import {useEffect, useState} from "react";
 
-const DataAnalysisCard = ({title, alreadyExists, rows, imgId, textAreaRef, setCropId}) => {
+const DataAnalysisCard = ({title, alreadyExists, rows, imgId, textAreaRef, setCropId, infoText}) => {
     rows = rows || 1
     const [content, setContent] = useState("")
 
@@ -32,6 +32,10 @@ const DataAnalysisCard = ({title, alreadyExists, rows, imgId, textAreaRef, setCr
     return (
         <div className={"my-1"}>
             <Card title={title}>
+                {
+                    infoText ?
+                        <div className={'my-3'}>{infoText}</div> : <></>
+                }
                 <div className={"mx-1"}>
                     <textarea
                         className={"w-100 font-monospace"}

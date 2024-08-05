@@ -6,7 +6,7 @@ import imagehash
 import numpy as np
 
 
-def average_hash(image_path, hash_size=8):
+def average_hash(image_path, hash_size=25):
     # Apri l'immagine e convertila in scala di grigi
     img = Image.open(image_path).convert('L')
 
@@ -43,24 +43,40 @@ def _are_images_similar(image1_path, image2_path, threshold=5):
     hash1 = average_hash(image1_path)
     hash2 = average_hash(image2_path)
     distance = distanza_di_hamming(hash1, hash2)
-    print("distanza: %d" % distance )
+    return distance < threshold
+
+
+def _are_hashes_similar(hash1, hash2, threshold=5):
+    distance = distanza_di_hamming(hash1, hash2)
     return distance < threshold
 
 
 def check_similarity_between_project_images(project, images_to_check):
     from storage_api.models.image_models import Image as ModelImage
-    prj_images = (ModelImage.objects.filter(project=project))
+    prj_images = ModelImage.objects.filter(project=project)
 
     for img in images_to_check:
         for compare_to_img in prj_images.exclude(
                 pk=img.pk,
         ):
-            print('Checking %s and %s' % (img, compare_to_img))
-            if _are_images_similar(
-                    img.imagefile.file.path,
-                    compare_to_img.imagefile.file.path,
-                    2
+            if img.imagefile.average_hash is None or img.imagefile.average_hash is '':
+                img.imagefile.average_hash = average_hash(img.imagefile.file.path)
+                img.imagefile.save()
+
+            if compare_to_img.imagefile.average_hash is None or compare_to_img.imagefile.average_hash is '':
+                compare_to_img.imagefile.average_hash = average_hash(compare_to_img.imagefile.file.path)
+                compare_to_img.imagefile.save()
+
+            if _are_hashes_similar(
+                img.imagefile.average_hash,
+                compare_to_img.imagefile.average_hash,
+                2
             ):
+                print('Images %s and %s are similar! ' % (compare_to_img.userId, img.userId))
+
+                if compare_to_img.isSimilarTo == img:
+                    continue
+
                 if compare_to_img.isSimilarTo is not None:
                     img.isSimilarTo = compare_to_img.isSimilarTo
                     img.save()

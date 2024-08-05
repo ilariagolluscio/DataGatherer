@@ -1,8 +1,14 @@
 from django.db.transaction import atomic
-
+import string as string_lib
 from storage_api.models.data_models import IGUser, Hashtag, UserHashtagUse
 from storage_api.models.image_models import ImgCrop, Image
 from rest_framework.exceptions import ValidationError
+
+
+def _prepare_string(hashtag_content):
+    hashtag_content = hashtag_content[1:].strip()
+    hashtag_content = hashtag_content.translate(str.maketrans('', '', string_lib.punctuation))
+    return hashtag_content.lower()
 
 
 @atomic
@@ -29,20 +35,20 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
     strings = img_hashtags_text.split(" ")
     hashtag_entities = []
 
-    for string in strings:
-        if len(string) <= 1: continue
-        if string[0] == '#':
-            string = string[1:].strip()
+    for hashtag_content in strings:
+        if len(hashtag_content) <= 1: continue
+        if hashtag_content[0] == '#':
+            hashtag_content = _prepare_string(hashtag_content)
 
             hashtag_queryset = Hashtag.objects.filter(
                 project=project,
-                content=string,
+                content=hashtag_content,
             )
 
             if hashtag_queryset.count() == 0:
                 hashtag = Hashtag.objects.create(
                     project=project,
-                    content=string,
+                    content=hashtag_content,
                     createdFromImage=image
                 )
             else:

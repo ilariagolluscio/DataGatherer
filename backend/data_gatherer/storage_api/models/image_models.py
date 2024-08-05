@@ -19,6 +19,7 @@ class Image(models.Model):
 
     class Meta:
         unique_together = ['project', 'userId']
+        ordering = ['-userId']
 
     def __str__(self):
         return "img %d, prj %s" % (self.userId, self.project_id)

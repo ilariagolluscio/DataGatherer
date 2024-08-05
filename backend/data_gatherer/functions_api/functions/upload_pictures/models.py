@@ -1,4 +1,6 @@
 from django.db import models
+
+from functions_api.functions.upload_pictures.logic import average_hash
 from storage_api.models.image_models import Image
 
 
@@ -8,6 +10,7 @@ class ImageFile(models.Model):
         Image,
         on_delete=models.CASCADE
     )
+    average_hash = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return "%s, image of %s" % (self.id, self.referencesImage)
