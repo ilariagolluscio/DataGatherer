@@ -162,3 +162,5 @@ STATIC_ROOT = "../static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = os.environ.get("MEDIA_PATH", default='/media/')
+
+DATA_UPLOAD_MAX_NUMBER_FILES = None

@@ -15,6 +15,7 @@ const ProjectOverviewPage = () => {
     const baseUrl = process.env.REACT_APP_API_URL || defaultBaseUrl
     const uploadUrl = baseUrl + "/fx_api/up/upload/"
     const getMatrixUrl = baseUrl + `/fx_api/matrix/${prjId}/`
+    const getBackupFile = baseUrl + `/fx_api/dump/`
 
     const {data: projectData, isSuccess, isFetching} = useQuery({
         queryFn: () => fetchProject(prjId),
@@ -52,6 +53,10 @@ const ProjectOverviewPage = () => {
 
                 <div className={"m-3"}>
                     <a href={getMatrixUrl} className="btn btn-primary mx-1">Scarica matrice formata</a>
+                </div>
+
+                <div className={"m-3"}>
+                    <a href={getBackupFile} className="btn btn-primary mx-1">Scarica file di backup</a>
                 </div>
 
                 <div className={"m-3 d-flex"}>
