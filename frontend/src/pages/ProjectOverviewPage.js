@@ -40,6 +40,12 @@ const ProjectOverviewPage = () => {
                 Progetto {projectData.name}
             </div>
 
+            <div className={'m-3 alert alert-info p-1'}>
+                Per assegnare tasti della tastiera ai tasti premibili, usare la combinazione ctrl+k su windows
+                e control+k su mac. E' una funzione sperimentale che crea problemi. Per eliminare tutte le associazioni
+                tasto - tastiera, eliminare i cookies della pagina e ricaricare.
+            </div>
+
             <div className={"d-flex my-3"}>
 
                 <div className={"m-3"}>

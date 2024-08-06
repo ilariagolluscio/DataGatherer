@@ -12,6 +12,9 @@ import ProjectOverviewPage from "./pages/ProjectOverviewPage";
 import DataGatheringPage from "./pages/data_gatering_page/DataGatheringPage";
 import DataStructuringPage from "./pages/data_structuring_page/DataStructuringPage";
 import DataEditingPage from "./pages/data_editing_page/DataEditingPage";
+import {useHotkeys} from "react-hotkeys-hook";
+import {useDispatch, useSelector} from "react-redux";
+import {keySetSelector, toggleKeySet} from "./slices/keyboardSlice";
 
 // Create a client
 const queryClient = new QueryClient()
@@ -21,6 +24,14 @@ const queryClient = new QueryClient()
 
 
 function App() {
+
+    const dispatch = useDispatch()
+
+    useHotkeys('ctrl+k', () => {
+        if (keySetSelector) dispatch(toggleKeySet())
+    })
+
+
     return (
         <CookiesProvider defaultSetOptions={{ path: '/' }}>
             <QueryClientProvider client={queryClient}>

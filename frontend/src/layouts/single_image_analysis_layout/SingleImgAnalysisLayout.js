@@ -21,10 +21,16 @@ const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, i
 
     return (
         <div>
-            <h1>
-                Raccolta Dati, IMG <span className={"font-monospace"}>{imageUserId}</span>
-            </h1>
-
+            {
+                imageUserId ?
+                    <h1>
+                        Raccolta Dati, IMG <span className={"font-monospace"}>{imageUserId}</span>
+                    </h1>
+                    :
+                    <h1>
+                        Raccolta Dati
+                    </h1>
+            }
             <div className={"w-100 d-flex"}>
                 <div
                     style={{

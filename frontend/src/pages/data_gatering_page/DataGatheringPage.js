@@ -13,14 +13,8 @@ import fetchProjects from "../../queries/fetchProjects";
 import fetchImageData from "../../queries/fetchImageData";
 import {useSearchParams} from "react-router-dom";
 import {defaultBaseUrl} from "../../global_vars";
-
-
-
-
-
-
-
-
+import {useHotkeys} from "react-hotkeys-hook";
+import HotButton from "../../components/hotstuff/HotButton";
 
 
 
@@ -32,9 +26,9 @@ const DataGatheringPage = () => {
     const [completedCrop, setCompletedCrop] = useState()
     const [percentCrop, setPercentCrop] = useState(null)
     const [isCropEnabled, setIsCropEnabled] = useState(false);
+    const [setMode, setSetMode] = useState(false)
 
     const imgRef = useRef(null)
-
 
 
     const { data: imgData, error, isFetching} = useQuery({
@@ -123,11 +117,14 @@ const DataGatheringPage = () => {
 
             bottomChildren={
                 <div className={"d-flex justify-content-center h-100 align-items-center bg-dark-subtle w-100"}>
-                    <button style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
-                            onClick={() => {window.location.href = `/edit?img_id=${imageId}`}}
+                    <HotButton
+                        style={{width: "20vw"}}
+                        className={"btn btn-primary my-2 mx-2"}
+                        onClick={() => {window.location.href = `/edit?img_id=${imageId}`}}
+                        uniqueHotKeyId={'data_gathering_next'}
                     >
                         Avanti
-                    </button>
+                    </HotButton>
                 </div>
             }
         />

@@ -8,7 +8,8 @@ import {createImageCrop} from "../../queries/createImageCrop";
 import {current} from "@reduxjs/toolkit";
 import {setDefaultCrop} from "../../queries/setDefaultCrop";
 import {deleteImage} from "../../queries/deleteImage";
-import {useDefaultCrop} from "../../queries/useDefaultCrop";
+import {doDefaultCrop} from "../../queries/doDefaultCrop";
+import HotButton from "../hotstuff/HotButton";
 
 
 const loadCrop = (cropData, imgRef, setRecognizedValue, previewCanvasRef) => {
@@ -83,9 +84,14 @@ const ImageAnalysisCard = ({
         onError: (error) => alert("Errore nella creazione del ritaglio!" + error.message)
     })
 
+
+
     const {mutate: defaultCropMutate} = useMutation({
-        queryKey: ['useDefaultCrop'],
-        mutationFn: useDefaultCrop,
+        queryKey: ['useDefaultCrops'],
+        mutationFn: () => doDefaultCrop({
+            fieldName: title,
+            targetImage: imgId
+        }),
         retry: 1,
         onSuccess: (data) => {
             setRecognizedValue(data.recognizedText)
@@ -98,7 +104,7 @@ const ImageAnalysisCard = ({
 
     const {mutate: setDefaultMutate} = useMutation({
         queryKey: ['setDefault'],
-        mutationFn: (id) => setDefaultCrop(id),
+        mutationFn: () => setDefaultCrop(cropId),
         retry: 1,
         onSuccess: () => alert('Ritaglio impostato come default!'),
         onError: () => alert('Errore nell\'impostazione del ritaglio')
@@ -167,39 +173,40 @@ const ImageAnalysisCard = ({
 
                 <div className={"w-100 h-100 d-flex"}>
                     <div>
-                        <button
+                        <HotButton
+                            uniqueHotKeyId={`set_default_${title}`}
                             className={"btn btn-primary my-2 mx-2"}
-                            onClick={() => defaultCropMutate({
-                                fieldName: title,
-                                targetImage: imgId
-                            })}
+                            onClick={defaultCropMutate}
                         >
                             Usa il ritaglio di default
-                        </button>
+                        </HotButton>
                     </div>
 
                     <div>
-                        <button
+                        <HotButton
                             className={"btn btn-primary my-2 mx-2"}
                             onClick={() => setIsCropEnabled(true)}
+                            uniqueHotKeyId={`begin_crop_${title}`}
                         >
                             Inizia il ritaglio immagine
-                        </button>
+                        </HotButton>
                     </div>
                     <div>
-                        <button
+                        <HotButton
+                            uniqueHotKeyId={`finish_crop_${title}`}
                             className={"btn btn-primary my-2 mx-2"}
                             onClick={handleSaveCrop}
                         >
                             Concludi ritaglio immagine
-                        </button>
+                        </HotButton>
                     </div>
                     {
                         completedCrop ?
                             <div>
                                 <button
+
                                     className={"btn btn-primary my-2 mx-2"}
-                                    onClick={() => setDefaultMutate(cropId)}
+                                    onClick={setDefaultMutate}
                                 >
                                     Salva il taglio come default
                                 </button>

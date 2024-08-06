@@ -13,6 +13,7 @@ import {useRef, useState} from "react";
 import {createProject} from "../../queries/createProject";
 import {saveReviewedData} from "../../queries/saveReviewedData";
 import {extendNetworkFromImage} from "../../queries/extendNetworkFromImage";
+import HotButton from "../../components/hotstuff/HotButton";
 
 
 const DataEditingPage = () => {
@@ -32,10 +33,12 @@ const DataEditingPage = () => {
     });
 
     const {mutate: saveReviewedDataMutation} = useMutation({
-        mutationFn: saveReviewedData,
+        mutationFn: (data) => {
+            setHasDataBeenSaved(false)
+            return saveReviewedData(data)
+        },
         retry: 1,
         onSuccess: () => {
-            alert("Dati salvati con successo!")
             setHasDataBeenSaved(true)
         },
         onError: (error) => alert("Errore! " + error.message)
@@ -56,6 +59,8 @@ const DataEditingPage = () => {
     const handleForward = () => {
         structureDataMutation({targetImage: imageId})
     }
+
+
 
     const handleSaveData = () => {
         if (usernameTARef.current.value === ""){
@@ -101,8 +106,6 @@ const DataEditingPage = () => {
     return (
         <SingleImgAnalysisLayout
 
-            imageUserId={1}
-
             leftChildren={
                 <div className={"w-100 h-100"}>
                     <img
@@ -142,16 +145,23 @@ const DataEditingPage = () => {
 
             bottomChildren={
                 <div className={"d-flex justify-content-center h-100 align-items-center bg-dark-subtle w-100"}>
-                    <button style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
+                    <HotButton
+                        style={{width: "20vw"}}
+                        className={`btn my-2 mx-2 btn-primary`}
                         onClick={handleSaveData}
+                        uniqueHotKeyId={'save_data_data_edit'}
                     >
                         Salva Dati
-                    </button>
-                    <button disabled={!hasDataBeenSaved} style={{width: "20vw"}} className={"btn btn-primary my-2 mx-2"}
-                            onClick={handleForward}
+                    </HotButton>
+                    <HotButton
+                        disabled={!hasDataBeenSaved}
+                        style={{width: "20vw"}}
+                        className={"btn btn-primary my-2 mx-2"}
+                        uniqueHotKeyId={'next_data_edit'}
+                        onClick={handleForward}
                     >
                         Prosegui
-                    </button>
+                    </HotButton>
                 </div>
             }
         />
