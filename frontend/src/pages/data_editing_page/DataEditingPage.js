@@ -136,7 +136,8 @@ const DataEditingPage = () => {
                         setCropId={setHashtagCropId}
                         infoText={"Tutti gli hashtags verranno creati a lettere minuscole e la " +
                             "punteggiatura, all'interno o alla fine degli hashtags " +
-                            "(!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~) non verrà considerata"}
+                            "(!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~) non verrà considerata. Gli hashtags " +
+                            "possono essere scritti senza spazi tra uno e l'altro (i.e. #ciao#sus)"}
                     />
 
                 </div>

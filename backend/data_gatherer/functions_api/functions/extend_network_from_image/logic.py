@@ -16,8 +16,12 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
     if img_hashtags_text is None or img_username_text is None:
         raise ValidationError("Attenzione! Non sono ancora stati raccolti dati dall'immagine!")
 
-    img_username_text = img_username_text.replace('\n', ' ').strip()
-    img_hashtags_text = img_hashtags_text.replace('\n', ' ')
+    img_username_text = (img_username_text
+                         .replace('\n', ' ')
+                         .strip())
+    img_hashtags_text = (img_hashtags_text
+                         .replace('\n', ' ')
+                         .replace('#', ' #'))
 
     user_queryset = IGUser.objects.filter(
         project=project,
