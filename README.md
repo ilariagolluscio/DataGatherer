@@ -10,11 +10,11 @@ You need Docker installed.
 
 You will be able to get a matrix:
 
-|        | hashtag_1 | hashtag_2 | ... | hashtag_n |
-|--------|-----------|-----------|-----|-----------|
-| user_1 | weight_11 |           |     |           |
-| user_2 |           |           |     |           |
-| user_3 |           |           |     | weight_nn |
+|           | user_1    | user_2 | ... | user_3    |
+|-----------|-----------|--------|-----|-----------|
+| hashtag_1 | weight_11 |        |     |           |
+| hashtag_2 |           |        |     |           |
+| hashtag_n |           |        |     | weight_nn |
 
 where weight = in how many posts a user has used the hashtag? 
 
