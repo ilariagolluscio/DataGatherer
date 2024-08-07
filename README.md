@@ -2,6 +2,12 @@
 
 This project is aimed at the creation of a software that allows for sem i-automatic extraction of specific data from a given set of images.
 
+## A word of caution
+
+*This software has been written in the least time possible. There are still bugs bad and code standard is low.
+It may not be improved.
+Caution and frequent backing-up is advised.*
+
 ## Requirements
 
 You need Docker installed.
