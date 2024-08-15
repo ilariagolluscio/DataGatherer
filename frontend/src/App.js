@@ -6,9 +6,8 @@ import {
 import {CookiesProvider, useCookies} from 'react-cookie';
 
 /* Import delle varie pagine */
-import CropDemo from "./pages/CropDemo";
-import HomePage from "./pages/HomePage";
-import ProjectOverviewPage from "./pages/ProjectOverviewPage";
+import HomePage from "./pages/home_page/HomePage";
+import ProjectOverviewPage from "./pages/project_overview_page/ProjectOverviewPage";
 import DataGatheringPage from "./pages/data_gatering_page/DataGatheringPage";
 import DataStructuringPage from "./pages/data_structuring_page/DataStructuringPage";
 import DataEditingPage from "./pages/data_editing_page/DataEditingPage";

@@ -8,6 +8,9 @@ from storage_api.views.image_views import *
 imageRouter = routers.DefaultRouter()
 imageRouter.register(r'', ImageViewSet)
 
+imgDataRouter = routers.DefaultRouter()
+imgDataRouter.register(r'', ImgDataViewSet)
+
 imgCropRouter = routers.DefaultRouter()
 imgCropRouter.register(r'', ImgCropViewSet)
 
@@ -26,6 +29,7 @@ userHashtagUseRouter.register(r'', UserHashtagUseViewSet)
 
 urlpatterns = [
     path('images/', include(imageRouter.urls)),
+    path('img_data/', include(imgDataRouter.urls)),
     path('img_crops/', include(imgCropRouter.urls)),
     path('projects/', include(projectRouter.urls)),
     path('hashtags/', include(hashtagRouter.urls)),

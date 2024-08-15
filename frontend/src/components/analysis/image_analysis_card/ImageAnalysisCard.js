@@ -1,36 +1,15 @@
-import {useEffect, useRef, useState} from "react";
-import {canvasPreview} from "../../CanvasPreview";
-import Card from "../generic/Card";
+import {useRef, useState} from "react";
+import {canvasPreview} from "./canvasPreview";
+import Card from "../../generic/Card";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import fetchImageCropData from "../../queries/fetchImageCropData";
-import {createProject} from "../../queries/createProject";
-import {createImageCrop} from "../../queries/createImageCrop";
-import {current} from "@reduxjs/toolkit";
-import {setDefaultCrop} from "../../queries/setDefaultCrop";
-import {deleteImage} from "../../queries/deleteImage";
-import {doDefaultCrop} from "../../queries/doDefaultCrop";
-import HotButton from "../hotstuff/HotButton";
+import {createImageCrop} from "../../../queries/createImageCrop";
+import {patchDefaultCrop} from "../../../queries/patchDefaultCrop";
+import {doDefaultCrop} from "../../../queries/doDefaultCrop";
+import HotButton from "../../hotstuff/HotButton";
+import fetchImageCropAndLoadCrop from "../../../queries/fetchImageCropAndLoadCrop";
 
 
-const loadCrop = (cropData, imgRef, setRecognizedValue, previewCanvasRef) => {
-    if (!cropData) return
-    if(imgRef.current === null) return
-    if(previewCanvasRef.current === null) return
 
-    setRecognizedValue(cropData?.recognizedText)
-    const obj = {
-        y: (cropData.topPercent * 0.01) * imgRef.current.offsetHeight,
-        x: (cropData.leftPercent * 0.01) * imgRef.current.offsetWidth,
-        height: (cropData.heightPercent * 0.01) * imgRef.current.height,
-        width: (cropData.widthPercent * 0.01) * imgRef.current.width,
-    }
-
-    canvasPreview(
-        imgRef.current,
-        previewCanvasRef.current,
-        obj,
-    )
-}
 
 
 const CompletedCanvas = ({previewCanvasRef}) => {
@@ -64,23 +43,32 @@ const ImageAnalysisCard = ({
 
 
     const previewCanvasRef = useRef(null);
-    const [recognizedValue, setRecognizedValue] = useState("")
+    const [recognizedValue, setRecognizedValue] = useState(null)
     const [cropId, setCropId] = useState(null)
 
-    const {data: rawCropData, error, isFetching, isSuccess} = useQuery({
+
+
+
+    const {data: cropData, error, refetch: cropDataRefetch} = useQuery({
         queryKey: [`fetchImageCropData_${title}`],
-        queryFn: () => fetchImageCropData(imgId, title),
+        queryFn: () =>
+            fetchImageCropAndLoadCrop(
+                imgId,
+                title,
+                imgRef,
+                previewCanvasRef
+            ),
         retry: 1,
     })
+
+
+
 
     const {mutate: createMutate} = useMutation({
         queryKey: ['createImageCrop'],
         mutationFn: createImageCrop,
         retry: 1,
-        onSuccess: (data) => {
-            setRecognizedValue(data.recognizedText)
-            setCropId(data.id)
-        },
+        onSuccess: (data) => cropDataRefetch(),
         onError: (error) => alert("Errore nella creazione del ritaglio!" + error.message)
     })
 
@@ -96,26 +84,26 @@ const ImageAnalysisCard = ({
         onSuccess: (data) => {
             setRecognizedValue(data.recognizedText)
             setCropId(data.id)
-            loadCrop(data, imgRef, setRecognizedValue, previewCanvasRef)
+            /*loadCropFromServerData(data, imgRef, setRecognizedValue, previewCanvasRef)*/
         },
         onError: (error) => alert("Errore nell'utilizzo del ritaglio di default. Prova" +
             "a creare un nuovo ritaglio e poi impostarlo come ritaglio di default.")
     })
 
+
+
+
     const {mutate: setDefaultMutate} = useMutation({
         queryKey: ['setDefault'],
-        mutationFn: () => setDefaultCrop(cropId),
+        mutationFn: () => patchDefaultCrop(cropId),
         retry: 1,
         onSuccess: () => alert('Ritaglio impostato come default!'),
         onError: () => alert('Errore nell\'impostazione del ritaglio')
     })
 
-    useEffect(() => {
-        if (!Array.isArray(rawCropData)) return
-        if (rawCropData.length === 0) return
 
-        loadCrop(rawCropData[0], imgRef, setRecognizedValue, previewCanvasRef)
-    }, [isSuccess]);
+
+
 
     const handleSaveCrop = () => {
         if (imgRef.current === null) return
@@ -150,13 +138,6 @@ const ImageAnalysisCard = ({
         )
     }
 
-    if (isFetching) {
-        return (
-            <div>
-                Caricamento dati...
-            </div>
-        )
-    }
 
 
     vhHeight = vhHeight || "15vh"
@@ -222,9 +203,8 @@ const ImageAnalysisCard = ({
                         className={"w-100 font-monospace"}
                         placeholder={"Testo riconosciuto"}
                         rows={5}
-                        value={recognizedValue}
+                        value={cropData?.recognizedText}
                         disabled={true}
-                        onChange={(e) => setRecognizedValue(e.target.value)}
                     />
                 </div>
             </Card>

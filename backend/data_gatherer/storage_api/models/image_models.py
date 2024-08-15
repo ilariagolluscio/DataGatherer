@@ -25,6 +25,16 @@ class Image(models.Model):
         return "PRJ: %s, image %s" % (self.project, self.userId)
 
 
+class ImgData(models.Model):
+    fieldName = models.CharField(max_length=30)
+    value = models.TextField(max_length=5000)
+
+    image = models.ForeignKey(
+        Image,
+        on_delete=models.CASCADE
+    )
+
+
 class ImgCrop(models.Model):
     fieldName = models.CharField(max_length=30)
     topPercent = models.FloatField()

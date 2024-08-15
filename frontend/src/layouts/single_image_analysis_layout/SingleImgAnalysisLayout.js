@@ -17,7 +17,7 @@ const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, i
         2000
     )
 
-    const finalLeftWidth = cookies.width ? `${cookies.width}px` : '40px'
+    const finalLeftWidth = cookies.width ? `${cookies.width}px` : '30vw'
 
     return (
         <div>

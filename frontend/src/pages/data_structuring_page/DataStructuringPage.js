@@ -1,14 +1,7 @@
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
-import ReactCrop from "react-image-crop";
-import bolletta from "../bolletta.jpeg";
-import ImageAnalysisCard from "../../components/analysis/ImageAnalysisCard";
-import Card from "../../components/generic/Card";
-import DataAnalysisCard from "../../components/analysis/DataAnalysisCard";
 import {useSearchParams} from "react-router-dom";
-import {useRef, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import fetchImageData from "../../queries/fetchImageData";
-import {saveReviewedData} from "../../queries/saveReviewedData";
 import {defaultBaseUrl} from "../../global_vars";
 import UsernameAnalysisCard from "../../components/analysis/UsenameAnalysisCard";
 import HashtagAnalysisGallery from "../../components/analysis/HashtagAnalysisGallery";

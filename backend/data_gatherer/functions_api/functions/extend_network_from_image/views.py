@@ -19,7 +19,6 @@ class ExtendNetworkFromImageView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         ser = Serializer(data=request.data)
-        print(request.data)
         ser.is_valid(raise_exception=True)
         target_image:Image = ser.validated_data['targetImage']
 

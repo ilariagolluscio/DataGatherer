@@ -1,16 +1,10 @@
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
-import ReactCrop from "react-image-crop";
-import bolletta from "../bolletta.jpeg";
-import ImageAnalysisCard from "../../components/analysis/ImageAnalysisCard";
-import Card from "../../components/generic/Card";
 import DataAnalysisCard from "../../components/analysis/DataAnalysisCard";
 import {useSearchParams} from "react-router-dom";
 import {defaultBaseUrl} from "../../global_vars";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import fetchImageData from "../../queries/fetchImageData";
-import fetchImageCropData from "../../queries/fetchImageCropData";
 import {useRef, useState} from "react";
-import {createProject} from "../../queries/createProject";
 import {saveReviewedData} from "../../queries/saveReviewedData";
 import {extendNetworkFromImage} from "../../queries/extendNetworkFromImage";
 import HotButton from "../../components/hotstuff/HotButton";

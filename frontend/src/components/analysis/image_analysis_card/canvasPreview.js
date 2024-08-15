@@ -1,6 +1,25 @@
-import {PixelCrop} from 'react-image-crop'
-
 const TO_RADIANS = Math.PI / 180
+
+
+export const loadCropFromServerData = (cropData, imgRef, previewCanvasRef) => {
+    if (!cropData) return
+    if(imgRef.current === null) return
+    if(previewCanvasRef.current === null) return
+
+    const obj = {
+        y: (cropData.topPercent * 0.01) * imgRef.current.offsetHeight,
+        x: (cropData.leftPercent * 0.01) * imgRef.current.offsetWidth,
+        height: (cropData.heightPercent * 0.01) * imgRef.current.height,
+        width: (cropData.widthPercent * 0.01) * imgRef.current.width,
+    }
+
+    canvasPreview(
+        imgRef.current,
+        previewCanvasRef.current,
+        obj,
+    )
+}
+
 
 export async function canvasPreview(
     image,

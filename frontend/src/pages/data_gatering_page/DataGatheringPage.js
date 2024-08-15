@@ -1,20 +1,12 @@
-import Card from "../../components/generic/Card";
-import bolletta from '../bolletta.jpeg';
-import horiz from '../horiz.png'
 import {useRef, useState} from "react";
-import {useDebounceEffect} from "../../useDebounceEffect";
-import {canvasPreview} from "../../CanvasPreview";
 import ReactCrop from "react-image-crop";
-import {useCookies} from "react-cookie";
-import ImageAnalysisCard from "../../components/analysis/ImageAnalysisCard";
+import ImageAnalysisCard from "../../components/analysis/image_analysis_card/ImageAnalysisCard";
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
 import {useQuery} from "@tanstack/react-query";
-import fetchProjects from "../../queries/fetchProjects";
 import fetchImageData from "../../queries/fetchImageData";
 import {useSearchParams} from "react-router-dom";
-import {defaultBaseUrl} from "../../global_vars";
-import {useHotkeys} from "react-hotkeys-hook";
 import HotButton from "../../components/hotstuff/HotButton";
+import {serverUrl} from "../../api_router/fx_api";
 
 
 
@@ -26,12 +18,11 @@ const DataGatheringPage = () => {
     const [completedCrop, setCompletedCrop] = useState()
     const [percentCrop, setPercentCrop] = useState(null)
     const [isCropEnabled, setIsCropEnabled] = useState(false);
-    const [setMode, setSetMode] = useState(false)
 
     const imgRef = useRef(null)
 
 
-    const { data: imgData, error, isFetching} = useQuery({
+    const {data: imgData, error, isFetching} = useQuery({
         queryKey: ['get_scenario', imageId],
         queryFn: () => (fetchImageData(imageId))
     });
@@ -54,10 +45,7 @@ const DataGatheringPage = () => {
         )
     }
 
-
-    const baseUrl = process.env.REACT_APP_API_URL || defaultBaseUrl
-    const imgUrl = baseUrl + imgData.image_file_url
-
+    const url = serverUrl + imgData.image_file_url
 
     return (
         <SingleImgAnalysisLayout
@@ -77,13 +65,11 @@ const DataGatheringPage = () => {
                     >
                         <img
                             className={"w-100 h-100 object-fit-contain"}
-                            src={imgUrl}
+                            src={url}
                             alt={"Immagine in analisi"}
-                            ref={imgRef}
+
                         />
                     </ReactCrop>
-
-
                 </div>
             }
 

@@ -1,33 +1,31 @@
 import Card from "../generic/Card";
 import {useQuery} from "@tanstack/react-query";
-import fetchImageCropData from "../../queries/fetchImageCropData";
-import {useEffect, useState} from "react";
+import fetchRecognizedTextFromImage from "../../queries/fetchRecognizedTextFromImage";
+import {useState} from "react";
 
-const DataAnalysisCard = ({title, alreadyExists, rows, imgId, textAreaRef, setCropId, infoText}) => {
-    rows = rows || 1
+const DataAnalysisCard = ({title, rows, imgId, textAreaRef, setCropId, infoText}) => {
     const [content, setContent] = useState("")
 
 
-    const {data: rawCropData} = useQuery({
+    const {recognizedText, error, isFetching} = useQuery({
         queryKey: [`fetchImageCropData_${title}`],
-        queryFn: () => fetchImageCropData(imgId, title),
+        queryFn: () => fetchRecognizedTextFromImage(imgId, title),
         retry: 1,
     })
 
-    useEffect(() => {
-        if (!rawCropData) return
-        if (rawCropData.length === 0) return
-        const cropData = rawCropData[0]
+    if (error){
+        return <div>
+            Err: {error.error}
+        </div>
+    }
 
-        setCropId(cropData.id)
-
-        if (cropData.reviewedText !== "" && cropData.reviewedText){
-            setContent(cropData.reviewedText)
-            return
-        }
-        setContent(cropData.recognizedText)
-
-    }, [rawCropData]);
+    if (isFetching){
+        return (
+            <div>
+                Caricamento...
+            </div>
+        )
+    }
 
     return (
         <div className={"my-1"}>
@@ -36,6 +34,25 @@ const DataAnalysisCard = ({title, alreadyExists, rows, imgId, textAreaRef, setCr
                     infoText ?
                         <div className={'my-3'}>{infoText}</div> : <></>
                 }
+                <div className={'h5'}>
+                    Testo riconosciuto dall'immagine
+                </div>
+                <div className={"mx-1"}>
+                    <textarea
+                        className={"w-100 font-monospace"}
+                        placeholder={"Testo riconosciuto..."}
+                        value={recognizedText}
+                        disabled={true}
+                        ref={textAreaRef}
+                        rows={rows}
+                        onChange={e => setContent(e.target.value)}
+                    />
+                </div>
+
+                <div className={'h5'}>
+                    Testo finale su cui fare l'analisi
+                </div>
+
                 <div className={"mx-1"}>
                     <textarea
                         className={"w-100 font-monospace"}

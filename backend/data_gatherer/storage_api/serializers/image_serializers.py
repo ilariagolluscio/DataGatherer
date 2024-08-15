@@ -18,6 +18,12 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ImgDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImgData
+        fields = '__all__'
+
+
 class ImgCropSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImgCrop

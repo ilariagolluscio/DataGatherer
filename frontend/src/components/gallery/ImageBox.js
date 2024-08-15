@@ -3,7 +3,7 @@ import {useMutation} from "@tanstack/react-query";
 import {deleteImage} from "../../queries/deleteImage";
 import {useRef} from "react";
 
-const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id}) => {
+const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id}) => {
 
     const mainRef = useRef(null);
 
@@ -17,9 +17,10 @@ const ImageBox = ({userId, isDataGathered, imageFileUrl, imgId, is_similar_to_us
     const {mutate: deleteMutate} = useMutation({
         mutationFn: deleteImage,
         retry: 1,
-        onSuccess: () => (
-            mainRef.current.style.display="none"
-        ),
+        onSuccess: () => {
+            mainRef.current.style.display = "none"
+            prjDataRefetch()
+        },
         onError: (error) => alert("Errore di connessione: " + error.message)
     })
 

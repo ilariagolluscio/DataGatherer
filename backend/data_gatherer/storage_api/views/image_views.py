@@ -1,6 +1,6 @@
 from storage_api.models.image_models import *
 
-from storage_api.serializers.image_serializers import ImageSerializer, ImgCropSerializer
+from storage_api.serializers.image_serializers import ImageSerializer, ImgCropSerializer, ImgDataSerializer
 from django_filters import rest_framework as filters
 
 from storage_api.views.common.common_views import CompleteModelViewSet
@@ -27,7 +27,11 @@ class ImgCropViewSet(CompleteModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def destroy(self, request, *args, **kwargs):
-        super().destroy(request, *args, **kwargs)
+
+class ImgDataViewSet(CompleteModelViewSet):
+    queryset = ImgData.objects.all()
+    serializer_class = ImgDataSerializer
+    filter_backends = (filters.DjangoFilterBackend, )
+    filterset_fields = ['image', 'fieldName']
 
 

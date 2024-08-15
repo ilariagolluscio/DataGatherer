@@ -3,7 +3,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import fetchIGUser from "../../queries/fetchUserHashtagUses";
 import HotButton from "../hotstuff/HotButton";
-import {setDefaultCrop} from "../../queries/setDefaultCrop";
+import {patchDefaultCrop} from "../../queries/patchDefaultCrop";
 import {patchAlias} from "../../queries/patchAlias";
 
 const UsernameAnalysisCard = ({imgId}) => {
