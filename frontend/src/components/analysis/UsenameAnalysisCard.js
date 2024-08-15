@@ -89,33 +89,7 @@ const UsernameAnalysisCard = ({imgId}) => {
                         onChange={e => setContent(e.target.value)}
                     />
                 </div>
-                <div className={"mx-1 d-flex align-items-center w-100"}>
-                    <div className={'mx-1 my-3'}>
-                        Alias
-                    </div>
-                    <input
-                        className={"w-50 font-monospace"}
-                        placeholder={"alias..."}
-                        value={alias}
-                        onChange={e => setAlias(e.target.value)}
-                    />
-                    <div className={'m-2'}>
-                        <button
-                            className={'btn btn-primary'}
-                            onClick={handleSetAlias}
-                        >
-                            SET
-                        </button>
-                    </div>
-                    <div className={'m-2'}>
-                        <button
-                            onClick={handleRemoveAlias}
-                            className={'btn btn-danger'}
-                        >
-                            DEL
-                        </button>
-                    </div>
-                </div>
+
 
                 {
                     isCreatedByThisImage ?
