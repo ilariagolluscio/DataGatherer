@@ -64,7 +64,7 @@ class IGUser(models.Model):
 class UserHashtagUse(models.Model):
     project = models.ForeignKey(
         Project,
-        on_delete=models.CASCADE
+        on_delete=models.RESTRICT
     )
     igUser = models.ForeignKey(
         IGUser,
@@ -76,7 +76,7 @@ class UserHashtagUse(models.Model):
     )
     image = models.ForeignKey(
         Image,
-        on_delete=models.CASCADE
+        on_delete=models.RESTRICT
     )
 
     class Meta:
