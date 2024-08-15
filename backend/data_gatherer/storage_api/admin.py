@@ -3,7 +3,7 @@ from django.contrib import admin
 from data_gatherer.admin_sites import global_admin_site
 from storage_api.models.data_models import Hashtag, IGUser, UserHashtagUse
 from storage_api.models.image_models import Image, ImgCrop
-from storage_api.models.project_models import Project
+from storage_api.models.project_models import *
 from functions_api.functions.upload_pictures.models import ImageFile
 
 
@@ -38,4 +38,5 @@ global_admin_site.register(Image, ProjectEntityAdmin)
 global_admin_site.register(Hashtag, ProjectEntityAdmin)
 global_admin_site.register(IGUser, IGUserAdmin)
 global_admin_site.register(UserHashtagUse, UserHashtagUseAdmin)
+global_admin_site.register(ProjectDefaultCrop, ProjectEntityAdmin)
 

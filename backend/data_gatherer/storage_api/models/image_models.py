@@ -41,7 +41,6 @@ class ImgCrop(models.Model):
     leftPercent = models.FloatField()
     heightPercent = models.FloatField()
     widthPercent = models.FloatField()
-    isDefault = models.BooleanField(default=False)
     recognizedText = models.TextField(max_length=10000, blank=True)
     reviewedText = models.TextField(max_length=10000, blank=True, null=True)
 
@@ -65,12 +64,6 @@ class ImgCrop(models.Model):
             image=self.image,
             fieldName=self.fieldName,
         ).delete()
-
-        if self.isDefault:
-            queryset = ImgCrop.objects.filter(isDefault=True, fieldName=self.fieldName)
-            for item in queryset:
-                item.isDefault = False
-                item.save()
 
         super().save(force_insert, force_update, using, update_fields)
 

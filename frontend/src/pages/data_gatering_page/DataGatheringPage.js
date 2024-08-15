@@ -8,6 +8,9 @@ import {useSearchParams} from "react-router-dom";
 import HotButton from "../../components/hotstuff/HotButton";
 import {serverUrl} from "../../api_router/fx_api";
 
+// extremely important
+import 'react-image-crop/dist/ReactCrop.css'
+
 
 
 const DataGatheringPage = () => {
@@ -67,7 +70,7 @@ const DataGatheringPage = () => {
                             className={"w-100 h-100 object-fit-contain"}
                             src={url}
                             alt={"Immagine in analisi"}
-
+                            ref={imgRef}
                         />
                     </ReactCrop>
                 </div>

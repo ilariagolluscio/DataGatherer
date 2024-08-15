@@ -17,7 +17,7 @@ class ImgCropViewSet(CompleteModelViewSet):
     queryset = ImgCrop.objects.all()
     serializer_class = ImgCropSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ['image', 'fieldName', 'isDefault']
+    filterset_fields = ['image', 'fieldName']
 
     def create(self, request, *args, **kwargs):
         img_id = request.data['image']

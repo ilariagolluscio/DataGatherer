@@ -44,7 +44,6 @@ const ImageAnalysisCard = ({
 
     const previewCanvasRef = useRef(null);
     const [recognizedValue, setRecognizedValue] = useState(null)
-    const [cropId, setCropId] = useState(null)
 
 
 
@@ -81,11 +80,7 @@ const ImageAnalysisCard = ({
             targetImage: imgId
         }),
         retry: 1,
-        onSuccess: (data) => {
-            setRecognizedValue(data.recognizedText)
-            setCropId(data.id)
-            /*loadCropFromServerData(data, imgRef, setRecognizedValue, previewCanvasRef)*/
-        },
+        onSuccess: () => cropDataRefetch(),
         onError: (error) => alert("Errore nell'utilizzo del ritaglio di default. Prova" +
             "a creare un nuovo ritaglio e poi impostarlo come ritaglio di default.")
     })
@@ -95,7 +90,7 @@ const ImageAnalysisCard = ({
 
     const {mutate: setDefaultMutate} = useMutation({
         queryKey: ['setDefault'],
-        mutationFn: () => patchDefaultCrop(cropId),
+        mutationFn: () => patchDefaultCrop(cropData.id),
         retry: 1,
         onSuccess: () => alert('Ritaglio impostato come default!'),
         onError: () => alert('Errore nell\'impostazione del ritaglio')
@@ -105,9 +100,10 @@ const ImageAnalysisCard = ({
 
 
 
+
+
     const handleSaveCrop = () => {
-        if (imgRef.current === null) return
-        if (completedCrop === null) return
+        if (!imgRef.current || !completedCrop === null) return
 
         canvasPreview(
             imgRef.current,

@@ -22,3 +22,8 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
+class ProjectDefaultCropSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProjectDefaultCrop
+        fields = '__all__'

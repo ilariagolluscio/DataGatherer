@@ -26,6 +26,9 @@ igUserRouter.register(r'', IGUserViewSet)
 userHashtagUseRouter = routers.DefaultRouter()
 userHashtagUseRouter.register(r'', UserHashtagUseViewSet)
 
+projectDefaultCropRouter = routers.DefaultRouter()
+projectDefaultCropRouter.register(r'', ProjectDefaultCropViewSet)
+
 
 urlpatterns = [
     path('images/', include(imageRouter.urls)),
@@ -35,4 +38,5 @@ urlpatterns = [
     path('hashtags/', include(hashtagRouter.urls)),
     path('ig_users/', include(igUserRouter.urls)),
     path('user_hashtag_uses/', include(userHashtagUseRouter.urls)),
+    path('prj_default_crop/', include(projectDefaultCropRouter.urls))
 ]
