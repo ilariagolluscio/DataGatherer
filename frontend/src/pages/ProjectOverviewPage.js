@@ -65,10 +65,6 @@ const ProjectOverviewPage = () => {
                     <a href={getBackupFile} className="btn btn-primary mx-1">Scarica file di backup</a>
                 </div>
 
-                <div className={"m-3"}>
-                    <a href={getBackupFile} className="btn btn-primary mx-1">Vai alla pagina di admin</a>
-                </div>
-
                 <div className={"m-3 d-flex"}>
                     {!projectData.are_all_images_analyzed ?
                         <a href={analyzeNextImageButtonUrl} className="btn btn-primary">
