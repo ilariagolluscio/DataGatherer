@@ -16,6 +16,7 @@ Including another URLconf
 """
 import os
 
+from data_gatherer.admin_sites import global_admin_site
 from functions_api import local_urls as fx_urls
 from storage_api import local_urls as storage_urls
 from storage_api.admin import admin
@@ -26,7 +27,7 @@ from django.conf import settings
 pre_path = os.environ.get("PRE_PATH", default="")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', global_admin_site.urls),
     path('fx_api/', include(fx_urls)),
     path('storage_api/', include(storage_urls)),
 ]

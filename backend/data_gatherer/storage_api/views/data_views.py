@@ -1,6 +1,6 @@
 from storage_api.models.data_models import *
 from storage_api.views.common.common_views import CompleteModelViewSet
-from storage_api.serializers.data_serializers import ImgDataSerializer, HashtagSerializer, IGUserSerializer, \
+from storage_api.serializers.data_serializers import HashtagSerializer, IGUserSerializer, \
     UserHashtagUseSerializer
 from django_filters import rest_framework as filters
 

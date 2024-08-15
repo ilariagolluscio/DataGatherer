@@ -57,6 +57,7 @@ const HomePage = () => {
 
     const baseUrl = process.env.REACT_APP_API_URL || defaultBaseUrl
     const uploadUrl = baseUrl + "/fx_api/up/upload/"
+    const adminUrl = baseUrl + '/admin/'
 
 
     if (error) return(
@@ -71,13 +72,23 @@ const HomePage = () => {
                 Progetti
             </div>
 
-            <div className={"m-5"}>
-                <a href="#" className="btn btn-success" onClick={handleCreate}>Crea nuovo progetto</a>
+            <div className={'d-flex flex-wrap m-5'}>
+
+                <div className={"m-2"}>
+                    <a href="#" className="btn btn-success" onClick={handleCreate}>Crea nuovo progetto</a>
+                </div>
+
+                <div className={"m-2"}>
+                    <a href={uploadUrl} className="btn btn-primary mx-1">Carica immagini in un progetto</a>
+                </div>
+
+                <div className={"m-2"}>
+                    <a href={adminUrl} className="btn btn-primary mx-1">Apri pannello di controllo entità (username: admin, password: admin)</a>
+                </div>
+
             </div>
 
-            <div className={"m-5"}>
-                <a href={uploadUrl} className="btn btn-primary mx-1">Carica immagini in un progetto</a>
-            </div>
+
 
             {
                 projects ? projects.map((child, i) => (

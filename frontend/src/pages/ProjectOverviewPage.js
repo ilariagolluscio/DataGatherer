@@ -46,7 +46,7 @@ const ProjectOverviewPage = () => {
                 tasto - tastiera, eliminare i cookies della pagina e ricaricare.
             </div>
 
-            <div className={"d-flex my-3"}>
+            <div className={"d-flex flex-wrap my-3"}>
 
                 <div className={"m-3"}>
                     <a href={'/'} className="btn btn-primary mx-1">Torna ai progetti</a>
@@ -63,6 +63,10 @@ const ProjectOverviewPage = () => {
 
                 <div className={"m-3"}>
                     <a href={getBackupFile} className="btn btn-primary mx-1">Scarica file di backup</a>
+                </div>
+
+                <div className={"m-3"}>
+                    <a href={getBackupFile} className="btn btn-primary mx-1">Vai alla pagina di admin</a>
                 </div>
 
                 <div className={"m-3 d-flex"}>

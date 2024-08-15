@@ -2,12 +2,6 @@ from rest_framework import serializers
 from storage_api.models.data_models import *
 
 
-class ImgDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ImgData
-        fields = '__all__'
-
-
 class HashtagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag

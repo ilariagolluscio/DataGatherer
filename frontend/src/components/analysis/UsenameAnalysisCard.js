@@ -1,17 +1,43 @@
 import Card from "../generic/Card";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import fetchIGUser from "../../queries/fetchUserHashtagUses";
+import HotButton from "../hotstuff/HotButton";
+import {setDefaultCrop} from "../../queries/setDefaultCrop";
+import {patchAlias} from "../../queries/patchAlias";
 
 const UsernameAnalysisCard = ({imgId}) => {
     const [content, setContent] = useState('Caricamento...')
-    const [objId, setObjId] = useState('')
     const [isCreatedByThisImage, setIsCreatedByThisImage] = useState(false)
+    const [alias, setAlias] = useState('')
+    const [userId, setUserId] = useState(null)
 
     const {data: rawFetchData, isError, isSuccess} = useQuery({
         queryKey: [`fetchImageCropData_${imgId}`],
         queryFn: () => fetchIGUser(imgId),
         retry: 1,
+    })
+
+    const {mutate: setAliasMutation} = useMutation({
+        queryKey: ['setAlias'],
+        mutationFn: () => patchAlias({
+            alias: alias,
+            id: userId
+        }),
+        retry: 1,
+        onSuccess: () => alert(`L'alias ${alias} è stato associato all'utente!`),
+        onError: () => alert('Errore nell\'impostazione dell\'alias')
+    })
+
+    const {mutate: removeAliasMutation} = useMutation({
+        queryKey: ['removeAlias'],
+        mutationFn: () => patchAlias({
+            alias: null,
+            id: userId
+        }),
+        retry: 1,
+        onSuccess: () => alert(`L'alias è stato rimosso`),
+        onError: () => alert('Errore nella rimozione dell\'alias')
     })
     
     useEffect(() => {
@@ -24,8 +50,9 @@ const UsernameAnalysisCard = ({imgId}) => {
         }
         const fetchData = rawFetchData[0].igUser
 
-        setObjId(fetchData.id)
         setContent(fetchData.name)
+        setAlias(fetchData.alias)
+        setUserId(fetchData.id)
         setIsCreatedByThisImage(
             fetchData.createdFromImage == imgId
         )
@@ -41,7 +68,14 @@ const UsernameAnalysisCard = ({imgId}) => {
         )
     }
 
+    const handleSetAlias = () => {
+        setAliasMutation()
+    }
 
+    const handleRemoveAlias = () => {
+        setAlias('')
+        removeAliasMutation()
+    }
 
     return (
         <div className={"my-1"}>
@@ -55,6 +89,34 @@ const UsernameAnalysisCard = ({imgId}) => {
                         onChange={e => setContent(e.target.value)}
                     />
                 </div>
+                <div className={"mx-1 d-flex align-items-center w-100"}>
+                    <div className={'mx-1 my-3'}>
+                        Alias
+                    </div>
+                    <input
+                        className={"w-50 font-monospace"}
+                        placeholder={"alias..."}
+                        value={alias}
+                        onChange={e => setAlias(e.target.value)}
+                    />
+                    <div className={'m-2'}>
+                        <button
+                            className={'btn btn-primary'}
+                            onClick={handleSetAlias}
+                        >
+                            SET
+                        </button>
+                    </div>
+                    <div className={'m-2'}>
+                        <button
+                            onClick={handleRemoveAlias}
+                            className={'btn btn-danger'}
+                        >
+                            DEL
+                        </button>
+                    </div>
+                </div>
+
                 {
                     isCreatedByThisImage ?
                         <div className={"p-2 m-2 alert alert-warning"}>

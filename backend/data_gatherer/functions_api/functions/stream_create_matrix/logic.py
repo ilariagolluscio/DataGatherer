@@ -63,9 +63,10 @@ def stream_create_matrix(project: Project, response: StreamingHttpResponse):
             prj_users = prj_users.exclude(pk=user.pk)
 
     username_strings = ['']
-    for user in prj_users:
+    for item in prj_users:
+        user: IGUser = item
         username_strings.append(
-            user.name
+            user.matrix_name
         )
 
     writer = csv.writer(CSVBuffer(), delimiter=';')

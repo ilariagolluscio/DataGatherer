@@ -22,7 +22,7 @@ class Image(models.Model):
         ordering = ['-userId']
 
     def __str__(self):
-        return "img %d, prj %s" % (self.userId, self.project_id)
+        return "PRJ: %s, image %s" % (self.project, self.userId)
 
 
 class ImgCrop(models.Model):
