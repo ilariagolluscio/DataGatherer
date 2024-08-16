@@ -9,6 +9,8 @@ from storage_api.models.data_models import *
 from storage_api.models.image_models import *
 from storage_api.models.project_models import *
 
+import os
+pre_path = os.environ.get('TEST_PRE_PATH', default='')
 
 class ExtendNetworkFromImage(TestCase):
 

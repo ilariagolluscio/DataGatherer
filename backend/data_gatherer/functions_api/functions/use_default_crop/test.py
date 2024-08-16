@@ -4,7 +4,8 @@ from django.test import TestCase, Client
 from storage_api.models.data_models import *
 from storage_api.models.image_models import *
 from storage_api.models.project_models import *
-
+import os
+pre_path = os.environ.get('TEST_PRE_PATH', default='')
 
 class UseDefaultCropTestCase(TestCase):
 
@@ -54,7 +55,7 @@ class UseDefaultCropTestCase(TestCase):
 
     def test_with_no_default_in_existence(self):
         c = Client()
-        response = c.post('/fx_api/default_crop/', {
+        response = c.post(pre_path + '/fx_api/default_crop/', {
             'fieldName': 'Username',
             'targetImage': self.image2.pk,
             'project': self.project.pk
@@ -82,7 +83,7 @@ class UseDefaultCropTestCase(TestCase):
         )
 
         c = Client()
-        response = c.post('/fx_api/default_crop/', {
+        response = c.post(pre_path + '/fx_api/default_crop/', {
             'fieldName': 'Username',
             'targetImage': self.image2.pk,
             'project': self.project.pk
@@ -99,7 +100,7 @@ class UseDefaultCropTestCase(TestCase):
             image=self.image2
         )
 
-        response = c.post('/fx_api/default_crop/', {
+        response = c.post(pre_path + '/fx_api/default_crop/', {
             'fieldName': 'Hashtags',
             'targetImage': self.image2.pk,
             'project': self.project.pk

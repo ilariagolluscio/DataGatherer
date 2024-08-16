@@ -1,3 +1,5 @@
+import os
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.test import Client
@@ -5,6 +7,7 @@ from django.test import Client
 from storage_api.models.image_models import Image
 from storage_api.models.project_models import Project
 
+pre_path = os.environ.get('TEST_PRE_PATH', default='')
 
 class HashtagViewSetTestCase(TestCase):
     pass
@@ -48,7 +51,7 @@ class ImgCropViewSetTestCase(TestCase):
 
     def test_creation_without_pre_existing_entities(self):
         c = Client()
-        response = c.post('/storage_api/img_crops/', {
+        response = c.post(pre_path + '/storage_api/img_crops/', {
             'fieldName': 'Username',
             'topPercent': 0,
             'leftPercent': 0,
@@ -62,7 +65,9 @@ class ImgCropViewSetTestCase(TestCase):
 
     def test_creation_with_pre_existing_entities(self):
         c = Client()
-        c.post('/storage_api/img_crops/', {
+        print('swa')
+        print(pre_path + '/storage_api/img_crops/')
+        c.post(pre_path + '/storage_api/img_crops/', {
             'fieldName': 'Username',
             'topPercent': 0,
             'leftPercent': 0,
@@ -72,7 +77,7 @@ class ImgCropViewSetTestCase(TestCase):
             'image': self.image.pk
         })
 
-        response = c.post('/storage_api/img_crops/', {
+        response = c.post(pre_path + '/storage_api/img_crops/', {
             'fieldName': 'Username',
             'topPercent': 0,
             'leftPercent': 0,
@@ -112,7 +117,7 @@ class ImgDataViewSetTestCase(TestCase):
     def test_creation_without_pre_existing_entities(self):
         c = Client()
 
-        response = c.post('/storage_api/img_data/', {
+        response = c.post(pre_path + '/storage_api/img_data/', {
             'fieldName': 'Username',
             'value': 'bubi',
             'image': self.image.pk
@@ -123,7 +128,7 @@ class ImgDataViewSetTestCase(TestCase):
     def test_creation_with_pre_existing_entities(self):
         c = Client()
 
-        response = c.post('/storage_api/img_data/', {
+        response = c.post(pre_path + '/storage_api/img_data/', {
             'fieldName': 'Username',
             'value': 'bubi',
             'image': self.image.pk
@@ -131,7 +136,7 @@ class ImgDataViewSetTestCase(TestCase):
 
         assert response.status_code == 201
 
-        response = c.post('/storage_api/img_data/', {
+        response = c.post(pre_path + '/storage_api/img_data/', {
             'fieldName': 'Username',
             'value': 'bubi',
             'image': self.image.pk
@@ -139,7 +144,7 @@ class ImgDataViewSetTestCase(TestCase):
 
         assert response.status_code == 201
 
-        response = c.post('/storage_api/img_data/', {
+        response = c.post(pre_path + '/storage_api/img_data/', {
             'fieldName': 'Username',
             'value': 'bubidtfyvu',
             'image': self.image.pk
@@ -161,7 +166,7 @@ class ProjectDefaultCropViewSetTestCase(TestCase):
 
     def test_creation_without_pre_existing_entities(self):
         c = Client()
-        response = c.post('/storage_api/prj_default_crop/', {
+        response = c.post(pre_path + '/storage_api/prj_default_crop/', {
             'project': self.project.pk,
             'topPercent': 0,
             'leftPercent': 0,
@@ -174,7 +179,7 @@ class ProjectDefaultCropViewSetTestCase(TestCase):
 
     def test_creation_with_pre_existing_entities(self):
         c = Client()
-        response = c.post('/storage_api/prj_default_crop/', {
+        response = c.post(pre_path + '/storage_api/prj_default_crop/', {
             'project': self.project.pk,
             'topPercent': 0,
             'leftPercent': 0,
@@ -185,7 +190,7 @@ class ProjectDefaultCropViewSetTestCase(TestCase):
 
         assert response.status_code == 201
 
-        response = c.post('/storage_api/prj_default_crop/', {
+        response = c.post(pre_path + '/storage_api/prj_default_crop/', {
             'project': self.project.pk,
             'topPercent': 0,
             'leftPercent': 0,
@@ -196,7 +201,7 @@ class ProjectDefaultCropViewSetTestCase(TestCase):
 
         assert response.status_code == 201
 
-        response = c.post('/storage_api/prj_default_crop/', {
+        response = c.post(pre_path + '/storage_api/prj_default_crop/', {
             'project': self.project.pk,
             'topPercent': 0,
             'leftPercent': 85,

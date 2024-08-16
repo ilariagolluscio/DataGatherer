@@ -6,7 +6,8 @@ from django.test import TestCase, Client
 from storage_api.models.data_models import *
 from storage_api.models.image_models import *
 from storage_api.models.project_models import *
-
+import os
+pre_path = os.environ.get('TEST_PRE_PATH', default='')
 
 class StreamCreateMatrix(TestCase):
 
@@ -144,7 +145,7 @@ class StreamCreateMatrix(TestCase):
         )
 
         c = Client()
-        response = c.get('/fx_api/matrix/%s/' % self.project1.pk)
+        response = c.get(pre_path + '/fx_api/matrix/%s/' % self.project1.pk)
 
         content = io.BytesIO(b"".join(response.streaming_content))
         wrapper = io.TextIOWrapper(content, encoding='utf-8')
@@ -155,7 +156,7 @@ class StreamCreateMatrix(TestCase):
 
     def test_export_matrix_with_no_data(self):
         c = Client()
-        response = c.get('/fx_api/matrix/%s/' % self.project1.pk)
+        response = c.get(pre_path + '/fx_api/matrix/%s/' % self.project1.pk)
 
         content = io.BytesIO(b"".join(response.streaming_content))
         wrapper = io.TextIOWrapper(content, encoding='utf-8')
@@ -222,7 +223,7 @@ class StreamCreateMatrix(TestCase):
         )
 
         c = Client()
-        response = c.get('/fx_api/matrix/%s/' % self.project1.pk)
+        response = c.get(pre_path + '/fx_api/matrix/%s/' % self.project1.pk)
 
         content = io.BytesIO(b"".join(response.streaming_content))
         wrapper = io.TextIOWrapper(content, encoding='utf-8')
