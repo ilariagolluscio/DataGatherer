@@ -126,7 +126,7 @@ const DataEditingPage = () => {
                         style={{width: "20vw"}}
                         className={`btn my-2 mx-2 btn-primary`}
                         onClick={() => window.location.href = gather_route(prjId, imgId)}
-                        uniqueHotKeyId={'save_data_data_edit'}
+                        uniqueHotKeyId={'back_data_edit'}
                     >
                         Indietro
                     </HotButton>

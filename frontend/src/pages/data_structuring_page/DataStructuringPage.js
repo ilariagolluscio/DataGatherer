@@ -17,9 +17,6 @@ export const structure_route =  (prjId, imgId) => `/prj/${prjId}/works/${imgId}/
 const DataStructuringPage = () => {
     const {imgId,prjId} = useParams()
 
-
-    const [cookies] = useCookies(['current_prj']);
-
     const { data: imgData, error, isFetching} = useQuery({
         queryKey: ['fetchImageDataForStructure', imgId],
         queryFn: () => (fetchImage(imgId))
@@ -27,11 +24,9 @@ const DataStructuringPage = () => {
 
     const {data: projectData, isSuccess: isProjectDataSuccess} = useQuery({
         queryKey: ['projectDataStructuringPage', imgId],
-        queryFn: () => fetchProject(cookies.prjId),
+        queryFn: () => fetchProject(prjId),
         retry: 1
     })
-
-    console.log(projectData)
 
 
 
