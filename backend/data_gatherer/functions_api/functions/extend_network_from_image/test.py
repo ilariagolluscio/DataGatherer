@@ -19,7 +19,7 @@ class ExtendNetworkFromImage(TestCase):
             name='Test'
         )
 
-        with open(settings.MEDIA_ROOT + '/test/test_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot', infile.read())
             self.image = Image.objects.create(
                 file=_file,
@@ -30,7 +30,7 @@ class ExtendNetworkFromImage(TestCase):
                 isSimilarTo=None
             )
 
-        with open(settings.MEDIA_ROOT + '/test/test_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot', infile.read())
             self.image2 = Image.objects.create(
                 file=_file,

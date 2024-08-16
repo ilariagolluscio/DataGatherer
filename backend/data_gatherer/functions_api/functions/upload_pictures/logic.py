@@ -59,11 +59,11 @@ def check_similarity_between_project_images(project, images_to_check):
         for compare_to_img in prj_images.exclude(
                 pk=img.pk,
         ):
-            if img.average_hash is None or img.average_hash is '':
+            if img.average_hash is None or img.average_hash == '':
                 img.average_hash = average_hash(img.file.path)
                 img.save()
 
-            if compare_to_img.average_hash is None or compare_to_img.average_hash is '':
+            if compare_to_img.average_hash is None or compare_to_img.average_hash == '':
                 compare_to_img.average_hash = average_hash(compare_to_img.file.path)
                 compare_to_img.save()
 

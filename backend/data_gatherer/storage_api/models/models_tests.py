@@ -77,7 +77,7 @@ class ImgCropModelTestCase(TestCase):
             name='Test'
         )
 
-        with open(settings.MEDIA_ROOT + '/test/test_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot', infile.read())
             self.image = Image.objects.create(
                 file=_file,
@@ -130,7 +130,7 @@ class ImgCropModelTestCase(TestCase):
     def test_recognize_text_from_readable_image(self):
         from django.conf import settings
 
-        with open(settings.MEDIA_ROOT + '/test/cropped_readable_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/cropped_readable_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot_1', infile.read())
             local_img = Image.objects.create(
                 file=_file,
@@ -160,7 +160,7 @@ class ImgCropModelTestCase(TestCase):
     def test_recognize_text_from_unreadable_image(self):
         from django.conf import settings
 
-        with open(settings.MEDIA_ROOT + '/test/cropped_unreadable_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/cropped_unreadable_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot_2', infile.read())
             local_img = Image.objects.create(
                 file=_file,
@@ -190,7 +190,7 @@ class ImgCropModelTestCase(TestCase):
     def test_recognize_text_from_invalid_image(self):
         from django.conf import settings
 
-        with open(settings.MEDIA_ROOT + '/test/cropped_unreadable_screenshot.png', 'rb') as infile:
+        with open(settings.TEST_MEDIA_ROOT + '/cropped_unreadable_screenshot.png', 'rb') as infile:
             _file = SimpleUploadedFile('test_screenshot_2', infile.read())
             local_img = Image.objects.create(
                 file=_file,

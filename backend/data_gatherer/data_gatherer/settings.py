@@ -164,3 +164,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = os.environ.get("MEDIA_URL", default='/media/')
 
 DATA_UPLOAD_MAX_NUMBER_FILES = None
+
+TEST_MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
