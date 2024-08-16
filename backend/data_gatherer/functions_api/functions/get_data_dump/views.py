@@ -1,19 +1,8 @@
 import io
 
-from rest_framework.response import Response
-from rest_framework.status import *
-from rest_framework.decorators import api_view
-
-
-from functions_api.functions.save_reviewed_text.logic import save_reviewed_text
-from functions_api.functions.use_default_crop.logic import apply_default_crop_to_target_image
-
-from storage_api.models.image_models import ImgCrop, Image
-from storage_api.models.project_models import Project
-from storage_api.serializers.image_serializers import ImgCropSerializer
-from rest_framework import generics
-from django.http import HttpResponse
 from django.core.management import call_command
+from django.http import HttpResponse
+from rest_framework import generics
 
 
 class GetDataDumpApiView(generics.ListAPIView):

@@ -9,6 +9,15 @@ This code is made to be run **locally**. It does not manage access to data, nor 
 Please, double check that port 8080 is not reachable from outside your trusted network.
 
 
+## Testing Coverage
+
+The front end (React) is not automatically tested. 
+
+The back end (Django) is unit tested.
+Automatic testing is performed on all critical operations involving data. 
+The generated matrix is tested to be accurate to the data registered in the DB.
+
+
 ## Requirements
 
 You need Docker installed.

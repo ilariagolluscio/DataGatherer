@@ -6,7 +6,17 @@ from django.db import migrations, models
 def move_file_from_img_file_to_img(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
-    ImageFile = apps.get_model("functions_api", "ImageFile")
+    try:
+        ImageFile = apps.get_model("functions_api", "ImageFile")
+    except LookupError:
+        # Questo succede perchè nelle migrazioni successive il modello
+        # imageFile viene eliminato.
+        print("errore nel ritrovamento di functions_api in migrazione 0021.")
+        Image = apps.get_model("storage_api", "Image")
+        if Image.objects.all().count() == 0:
+            print("va bene, non esistono immagini")
+            return
+        raise Exception("non va bene, esistono immagini.")
 
     for item in ImageFile.objects.all():
         img_file = item
@@ -18,6 +28,7 @@ def move_file_from_img_file_to_img(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ('storage_api', '0020_alter_imgdata_unique_together'),
+        ('functions_api', '0004_delete_imagefile'),
     ]
 
     operations = [

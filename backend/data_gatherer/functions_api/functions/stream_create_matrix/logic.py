@@ -1,4 +1,5 @@
 import csv
+import itertools
 
 from django.http import HttpResponse, StreamingHttpResponse
 
@@ -71,7 +72,9 @@ def stream_create_matrix(project: Project, response: StreamingHttpResponse):
 
     writer = csv.writer(CSVBuffer(), delimiter=';')
 
-    iterator = prj_hashtags.iterator()
+    # Molto importante! Serve per fare in modo che la prima riga di hashtags
+    # non venga manggiata nella stampa degli username_strings, ovvero dei titoli
+    iterator = itertools.chain([''], prj_hashtags)
 
     counter_instance = Counter()
 

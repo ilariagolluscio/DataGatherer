@@ -5,7 +5,6 @@ import {defaultBaseUrl} from "../../global_vars";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import fetchImage from "../../queries/fetchImage";
 import {useRef, useState} from "react";
-import {saveReviewedData} from "../../queries/saveReviewedData";
 import {extendNetworkFromImage} from "../../queries/extendNetworkFromImage";
 import HotButton from "../../components/hotstuff/HotButton";
 import {structure_route} from "../data_structuring_page/DataStructuringPage";

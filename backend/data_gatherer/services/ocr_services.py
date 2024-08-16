@@ -6,8 +6,6 @@ def read_text_from_img(img_path, top_percent, left_percent, width_percent, heigh
     path_to_tesseract = "tesseract"
     image_path = img_path
 
-    print(image_path)
-
     img = Image.open(image_path)
 
     left = left_percent * 0.01 * img.width
@@ -21,8 +19,6 @@ def read_text_from_img(img_path, top_percent, left_percent, width_percent, heigh
 
     crop_img = crop_img.convert('L')
     text = pytesseract.image_to_string(crop_img)
-
-    print(text)
 
     if text == "":
         return "N.A."

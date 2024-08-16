@@ -1,5 +1,8 @@
 from django.db.transaction import atomic
 import string as string_lib
+
+from rest_framework import status
+
 from storage_api.models.data_models import IGUser, Hashtag, UserHashtagUse
 from storage_api.models.image_models import ImgCrop, Image
 from rest_framework.exceptions import ValidationError
@@ -13,8 +16,14 @@ def _prepare_string(hashtag_content):
 
 @atomic
 def extend_network_from_image(img_username_text, img_hashtags_text:str, project, image):
+    if project is None:
+        raise ValidationError("Non è stato passato alcun progetto", status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if project is None:
+        raise ValidationError("Non è stata passata alcuna immagine", status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     if img_hashtags_text is None or img_username_text is None:
-        raise ValidationError("Attenzione! Non sono ancora stati raccolti dati dall'immagine!")
+        raise ValidationError("Attenzione! Non sono ancora stati raccolti dati dall'immagine!", status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     img_username_text = (img_username_text
                          .replace('\n', ' ')

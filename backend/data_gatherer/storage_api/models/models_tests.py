@@ -1,3 +1,4 @@
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from storage_api.models.project_models import *
 from storage_api.models.image_models import *
@@ -70,22 +71,155 @@ class ImgDataModelTestCase(TestCase):
 class ImgCropModelTestCase(TestCase):
 
     def setUp(self):
-        pass
+        from django.conf import settings
+
+        self.project = Project.objects.create(
+            name='Test'
+        )
+
+        with open(settings.MEDIA_ROOT + '/test/test_screenshot.png', 'rb') as infile:
+            _file = SimpleUploadedFile('test_screenshot', infile.read())
+            self.image = Image.objects.create(
+                file=_file,
+                userId=0,
+                isDataGathered=False,
+                project=self.project,
+                average_hash=None,
+                isSimilarTo=None
+            )
+
+    def tearDown(self):
+        self.image.file.delete()
+        self.image.delete()
 
     def test_save_new_entity_with_no_pre_existing_entities(self):
-        raise Exception
+        ImgCrop.objects.create(
+            fieldName='Username',
+            topPercent=0.1,
+            leftPercent=0.1,
+            heightPercent=0.2,
+            widthPercent=0.2,
+            recognizedText='4w3r904g',
+            reviewedText='t4ej2',
+            image=self.image
+        )
 
     def test_save_new_entity_with_pre_existing_entities(self):
-        raise Exception
+        ImgCrop.objects.create(
+            fieldName='Username',
+            topPercent=0.1,
+            leftPercent=0.1,
+            heightPercent=0.2,
+            widthPercent=0.2,
+            recognizedText='4w3r904g',
+            reviewedText='t4ej2',
+            image=self.image
+        )
+
+        ImgCrop.objects.create(
+            fieldName='Username',
+            topPercent=0.1,
+            leftPercent=0.1,
+            heightPercent=0.2,
+            widthPercent=0.2,
+            recognizedText='4w3r904g',
+            reviewedText='t4ej2',
+            image=self.image
+        )
 
     def test_recognize_text_from_readable_image(self):
-        raise Exception
+        from django.conf import settings
+
+        with open(settings.MEDIA_ROOT + '/test/cropped_readable_screenshot.png', 'rb') as infile:
+            _file = SimpleUploadedFile('test_screenshot_1', infile.read())
+            local_img = Image.objects.create(
+                file=_file,
+                userId=1,
+                isDataGathered=False,
+                project=self.project,
+                average_hash=None,
+                isSimilarTo=None
+            )
+
+        img_crop = ImgCrop.objects.create(
+            fieldName='Username',
+            topPercent=0,
+            leftPercent=0,
+            heightPercent=100,
+            widthPercent=100,
+            recognizedText='4w3r904g',
+            reviewedText='t4ej2',
+            image=local_img
+        )
+
+        assert img_crop.recognizedText == 'niolajet + Follow'
+
+        local_img.file.delete()
+        local_img.delete()
 
     def test_recognize_text_from_unreadable_image(self):
-        raise Exception
+        from django.conf import settings
+
+        with open(settings.MEDIA_ROOT + '/test/cropped_unreadable_screenshot.png', 'rb') as infile:
+            _file = SimpleUploadedFile('test_screenshot_2', infile.read())
+            local_img = Image.objects.create(
+                file=_file,
+                userId=1,
+                isDataGathered=False,
+                project=self.project,
+                average_hash=None,
+                isSimilarTo=None
+            )
+
+        img_crop = ImgCrop.objects.create(
+            fieldName='Username',
+            topPercent=0,
+            leftPercent=0,
+            heightPercent=100,
+            widthPercent=100,
+            recognizedText='4w3r904g',
+            reviewedText='t4ej2',
+            image=local_img
+        )
+
+        assert img_crop.recognizedText == 'N.A.'
+
+        local_img.file.delete()
+        local_img.delete()
 
     def test_recognize_text_from_invalid_image(self):
-        raise Exception
+        from django.conf import settings
+
+        with open(settings.MEDIA_ROOT + '/test/cropped_unreadable_screenshot.png', 'rb') as infile:
+            _file = SimpleUploadedFile('test_screenshot_2', infile.read())
+            local_img = Image.objects.create(
+                file=_file,
+                userId=1,
+                isDataGathered=False,
+                project=self.project,
+                average_hash=None,
+                isSimilarTo=None
+            )
+
+        try:
+
+            ImgCrop.objects.create(
+                fieldName='Username',
+                topPercent=100,
+                leftPercent=100,
+                heightPercent=0,
+                widthPercent=0,
+                recognizedText='4w3r904g',
+                reviewedText='t4ej2',
+                image=local_img
+            )
+
+        except ValidationError:
+            local_img.file.delete()
+            local_img.delete()
+            return
+
+        raise Exception('Questo test dovrebbe fallire')
 
 
 class ProjectModelTestCase(TestCase):
@@ -94,4 +228,3 @@ class ProjectModelTestCase(TestCase):
 
 class ProjectDefaultCropModelTestCase(TestCase):
     pass
-

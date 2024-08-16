@@ -17,8 +17,6 @@ class UseDefaultCropView(generics.CreateAPIView):
     serializer_class = Serializer
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
-
         ser = Serializer(data=request.data)
         ser.is_valid(raise_exception=True)
 
@@ -33,7 +31,7 @@ class UseDefaultCropView(generics.CreateAPIView):
             )
         except MultipleObjectsReturned:
             return Response('Esiste più di un taglio di default',
-                            HTTP_500_INTERNAL_SERVER_ERROR)
+                            HTTP_500_INTERNAL_SERVER_ERROR)  # Has been tested not to be the case
         except ObjectDoesNotExist:
             return Response('Non esiste un taglio di default',
                             HTTP_404_NOT_FOUND)
