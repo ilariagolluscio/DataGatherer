@@ -3,6 +3,14 @@
 from django.db import migrations, models
 
 
+def move_file_from_img_file_to_img(apps, schema_editor):
+    Image = apps.get_model("storage_api", "image")
+
+    for item in Image.objects.all():
+        item.file = item.imagefile.file
+        item.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,6 +18,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(move_file_from_img_file_to_img),
         migrations.AlterField(
             model_name='image',
             name='file',

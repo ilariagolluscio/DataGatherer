@@ -15,11 +15,10 @@ fi
 # Just make sure you really mean it
 # python manage.py flush --no-input
 
-# We have base custom user model so need to makemigrations out of box
-python manage.py makemigrations || exit
+
 python manage.py migrate || exit
 python manage.py test || exit
 python manage.py collectstatic --noinput
-python manage.py createsuperuser --noinput || exit
+python manage.py createsuperuser --noinput
 
 exec "$@"
