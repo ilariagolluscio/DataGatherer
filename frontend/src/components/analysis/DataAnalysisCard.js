@@ -11,7 +11,7 @@ const DataAnalysisCard = ({title, rows, imgId, infoText, btnRef, setParentSucces
     const [isSuccess, setIsSuccess] = useState(0)
 
 
-    const {data: imageData, error: imgDataError} = useQuery({
+    const {error: imgDataError, isSuccess: isImageDataSuccess} = useQuery({
         queryKey: [`imgDataFetching_${title}`],
         queryFn: async () => {
             const res = await fetchImageData({
@@ -32,7 +32,7 @@ const DataAnalysisCard = ({title, rows, imgId, infoText, btnRef, setParentSucces
             return res
         },
         retry: 1,
-        enabled: !!imageData
+        enabled: !!isImageDataSuccess
     })
 
 
