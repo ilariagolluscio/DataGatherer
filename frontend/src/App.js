@@ -19,9 +19,6 @@ import {keySetSelector, toggleKeySet} from "./slices/keyboardSlice";
 const queryClient = new QueryClient()
 
 
-
-
-
 function App() {
 
     const dispatch = useDispatch()
@@ -32,25 +29,25 @@ function App() {
 
 
     return (
-        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+        <CookiesProvider defaultSetOptions={{path: '/'}}>
             <QueryClientProvider client={queryClient}>
                 <Router>
                     <Routes>
-                        <Route path="/" element={
-                            <HomePage/>
-                        }/>
-                        <Route path="/prj" element={
-                            <ProjectOverviewPage/>
-                        }/>
-                        <Route path="/gather" element={
+
+                        <Route path="/prj/:prjId/works/:imgId/gather" element={
                             <DataGatheringPage/>
                         }/>
-                        <Route path="/structure" element={
+                        <Route path="/prj/:prjId/works/:imgId/structure" element={
                             <DataStructuringPage/>
                         }/>
-                        <Route path="/edit" element={
+                        <Route path="/prj/:prjId/works/:imgId/edit" element={
                             <DataEditingPage/>
                         }/>
+
+                        <Route path="/prj/:prjId/*" element={<ProjectOverviewPage/>}/>
+
+                        <Route path="/*" element={<HomePage/>}/>
+
                     </Routes>
                 </Router>
             </QueryClientProvider>

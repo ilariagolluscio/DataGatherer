@@ -3,20 +3,23 @@ import ReactCrop from "react-image-crop";
 import ImageAnalysisCard from "../../components/analysis/image_analysis_card/ImageAnalysisCard";
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
 import {useQuery} from "@tanstack/react-query";
-import fetchImageData from "../../queries/fetchImageData";
-import {useSearchParams} from "react-router-dom";
+import fetchImage from "../../queries/fetchImage";
+import {useMatch, useParams} from "react-router-dom";
 import HotButton from "../../components/hotstuff/HotButton";
 import {serverUrl} from "../../api_router/fx_api";
 
 // extremely important
 import 'react-image-crop/dist/ReactCrop.css'
+import {edit_route} from "../data_editing_page/DataEditingPage";
+import {overview_route} from "../project_overview_page/ProjectOverviewPage";
 
 
+export const gather_route =  (prjId, imgId) => `/prj/${prjId}/works/${imgId}/gather`
 
 const DataGatheringPage = () => {
 
-    const [searchParams] = useSearchParams();
-    const imageId = searchParams.get("img_id");
+    const {imgId,prjId} = useParams()
+
     const [crop, setCrop] = useState()
     const [completedCrop, setCompletedCrop] = useState()
     const [percentCrop, setPercentCrop] = useState(null)
@@ -26,8 +29,8 @@ const DataGatheringPage = () => {
 
 
     const {data: imgData, error, isFetching} = useQuery({
-        queryKey: ['get_scenario', imageId],
-        queryFn: () => (fetchImageData(imageId))
+        queryKey: ['get_scenario', imgId],
+        queryFn: () => (fetchImage(imgId))
     });
 
 
@@ -87,6 +90,7 @@ const DataGatheringPage = () => {
                         imgRef={imgRef}
                         setCrop={setCrop}
                         percentCrop={percentCrop}
+                        prjId={prjId}
                     />
 
 
@@ -99,17 +103,29 @@ const DataGatheringPage = () => {
                         imgRef={imgRef}
                         setCrop={setCrop}
                         percentCrop={percentCrop}
+                        prjId={prjId}
                     />
 
                 </div>
             }
 
             bottomChildren={
+
                 <div className={"d-flex justify-content-center h-100 align-items-center bg-dark-subtle w-100"}>
                     <HotButton
                         style={{width: "20vw"}}
+                        className={`btn my-2 mx-2 btn-primary`}
+                        onClick={() => window.location.href = overview_route(prjId)}
+                        uniqueHotKeyId={'back_to_home'}
+                    >
+                        Torna alla home
+                    </HotButton>
+
+
+                    <HotButton
+                        style={{width: "20vw"}}
                         className={"btn btn-primary my-2 mx-2"}
-                        onClick={() => {window.location.href = `/edit?img_id=${imageId}`}}
+                        onClick={() => {window.location.href = edit_route(prjId, imgId)}}
                         uniqueHotKeyId={'data_gathering_next'}
                     >
                         Avanti

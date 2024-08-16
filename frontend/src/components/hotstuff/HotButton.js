@@ -4,14 +4,14 @@ import {useSelector} from "react-redux";
 import {useHotkeys} from "react-hotkeys-hook";
 import {useCookies} from "react-cookie";
 
-const HotButton = ({children, className, onClick, uniqueHotKeyId, style, disabled}) => {
+const HotButton = ({btnRef, children, className, onClick, uniqueHotKeyId, style, disabled}) => {
 
     const [cookies, setCookies] = useCookies(['keys'])
     const [ignoreCookies, setIgnoreCookies] = useState()
 
 
     const reduxKeySetEnabled = useSelector(keySetSelector)
-    const [finalClassName, setFinalClassName] = useState('')
+    const [finalClassName, setFinalClassName] = useState(null)
     const [hotkey, setHotkey] = useState(null)
     const [isSetting, setIsSetting] = useState(false)
 
@@ -62,9 +62,8 @@ const HotButton = ({children, className, onClick, uniqueHotKeyId, style, disable
             setHotkey(cookies[uniqueHotKeyId])
         }
 
-        setFinalClassName(`${className} ${
-            reduxKeySetEnabled ? 'btn-warning' : ''
-        }`)
+        if (reduxKeySetEnabled) setFinalClassName(`${className} btn-warning`)
+        if (!reduxKeySetEnabled) setFinalClassName(null)
 
     }, [reduxKeySetEnabled])
 
@@ -86,6 +85,7 @@ const HotButton = ({children, className, onClick, uniqueHotKeyId, style, disable
     return (
         <div>
             <button
+                ref={btnRef}
                 style={style}
                 className={finalClassName || className}
                 onClick={reduxKeySetEnabled ? setHotKeyBehaviour : onClick}

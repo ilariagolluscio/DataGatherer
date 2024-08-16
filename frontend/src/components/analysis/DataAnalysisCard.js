@@ -1,25 +1,75 @@
 import Card from "../generic/Card";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import fetchRecognizedTextFromImage from "../../queries/fetchRecognizedTextFromImage";
-import {useState} from "react";
+import {useRef, useState} from "react";
+import HotButton from "../hotstuff/HotButton";
+import {createImgData} from "../../queries/createImgData";
+import {fetchImageData} from "../../queries/fetchImageData";
 
-const DataAnalysisCard = ({title, rows, imgId, textAreaRef, setCropId, infoText}) => {
+const DataAnalysisCard = ({title, rows, imgId, infoText, btnRef, setParentSuccess}) => {
     const [content, setContent] = useState("")
+    const [isSuccess, setIsSuccess] = useState(0)
 
 
-    const {recognizedText, error, isFetching} = useQuery({
-        queryKey: [`fetchImageCropData_${title}`],
-        queryFn: () => fetchRecognizedTextFromImage(imgId, title),
-        retry: 1,
+    const {data: imageData, error: imgDataError} = useQuery({
+        queryKey: [`imgDataFetching_${title}`],
+        queryFn: async () => {
+            const res = await fetchImageData({
+                imgId,
+                fieldName: title
+            })
+            setContent(res)
+            return res
+        }
     })
 
-    if (error){
+
+    const {data: recognizedText, error, isFetching} = useQuery({
+        queryKey: [`fetchImageCropData_${title}`],
+        queryFn: async () => {
+            const res = await fetchRecognizedTextFromImage(imgId, title)
+            if (!content) setContent(res)
+            return res
+        },
+        retry: 1,
+        enabled: !!imageData
+    })
+
+
+    const {mutate: performSave} = useMutation({
+        queryKey: [`createData_${title}`],
+
+        mutationFn: () => createImgData({
+            fieldName: title,
+            value: content,
+            imgId
+        }),
+
+        onSuccess: () => {
+            setIsSuccess(1)
+            setTimeout(() => setIsSuccess(0), 1500)
+            setParentSuccess(true)
+        },
+
+        onError: (err) => {
+            alert(`Error: ${err}`)
+        }
+    })
+
+
+    if (error) {
         return <div>
             Err: {error.error}
         </div>
     }
 
-    if (isFetching){
+    if (imgDataError) {
+        return <div>
+            Img Data Error: {imgDataError.error}
+        </div>
+    }
+
+    if (isFetching) {
         return (
             <div>
                 Caricamento...
@@ -43,9 +93,7 @@ const DataAnalysisCard = ({title, rows, imgId, textAreaRef, setCropId, infoText}
                         placeholder={"Testo riconosciuto..."}
                         value={recognizedText}
                         disabled={true}
-                        ref={textAreaRef}
                         rows={rows}
-                        onChange={e => setContent(e.target.value)}
                     />
                 </div>
 
@@ -56,12 +104,23 @@ const DataAnalysisCard = ({title, rows, imgId, textAreaRef, setCropId, infoText}
                 <div className={"mx-1"}>
                     <textarea
                         className={"w-100 font-monospace"}
-                        placeholder={"Testo riconosciuto..."}
+                        placeholder={"Testo su cui fare le analisi..."}
                         value={content}
-                        ref={textAreaRef}
                         rows={rows}
                         onChange={e => setContent(e.target.value)}
                     />
+                </div>
+
+                <div className={'mx-1 d-flex'}>
+                    <HotButton
+                        className={`btn ${isSuccess === 1 ? 'btn-success' : 'btn-primary'}`}
+                        uniqueHotKeyId={`save_data_${title}`}
+                        onClick={performSave}
+                        btnRef={btnRef}
+                    >
+                        Salva dato {title}
+                    </HotButton>
+
                 </div>
             </Card>
         </div>

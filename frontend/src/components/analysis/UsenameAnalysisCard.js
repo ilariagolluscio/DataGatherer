@@ -2,8 +2,7 @@ import Card from "../generic/Card";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import fetchIGUser from "../../queries/fetchUserHashtagUses";
-import HotButton from "../hotstuff/HotButton";
-import {patchDefaultCrop} from "../../queries/patchDefaultCrop";
+
 import {patchAlias} from "../../queries/patchAlias";
 
 const UsernameAnalysisCard = ({imgId}) => {
@@ -12,41 +11,18 @@ const UsernameAnalysisCard = ({imgId}) => {
     const [alias, setAlias] = useState('')
     const [userId, setUserId] = useState(null)
 
-    const {data: rawFetchData, isError, isSuccess} = useQuery({
+    const {data: rawFetchData, isError, isSuccess, error} = useQuery({
         queryKey: [`fetchImageCropData_${imgId}`],
         queryFn: () => fetchIGUser(imgId),
         retry: 1,
     })
 
-    const {mutate: setAliasMutation} = useMutation({
-        queryKey: ['setAlias'],
-        mutationFn: () => patchAlias({
-            alias: alias,
-            id: userId
-        }),
-        retry: 1,
-        onSuccess: () => alert(`L'alias ${alias} è stato associato all'utente!`),
-        onError: () => alert('Errore nell\'impostazione dell\'alias')
-    })
 
-    const {mutate: removeAliasMutation} = useMutation({
-        queryKey: ['removeAlias'],
-        mutationFn: () => patchAlias({
-            alias: null,
-            id: userId
-        }),
-        retry: 1,
-        onSuccess: () => alert(`L'alias è stato rimosso`),
-        onError: () => alert('Errore nella rimozione dell\'alias')
-    })
     
     useEffect(() => {
         if (!rawFetchData) return
         if (rawFetchData.length === 0) {
-            alert('Dal post non è stato creato nessun utente o non è stato salvato alcun hashtag! Di conseguenza, non sono stati salvati dati! ' +
-                'Si prega di effettuare nuovamente l\'analisi dell\'immagine')
-            window.location.href = `/edit?img_id=${imgId}`
-
+            return
         }
         const fetchData = rawFetchData[0].igUser
 
@@ -63,19 +39,21 @@ const UsernameAnalysisCard = ({imgId}) => {
     if (isError) {
         return(
             <div>
-                ERRORRE!!!!!
+                Err {error.error}
             </div>
         )
     }
 
-    const handleSetAlias = () => {
-        setAliasMutation()
+
+    if (rawFetchData?.length === 0){
+        return (
+            <div className={'p-1 m-3 border border-black'}>
+                Non essendo stato rilevato alcun hashtag, non è stata creata alcuna nuova
+                associazione tra utente ed hashtag
+            </div>
+        )
     }
 
-    const handleRemoveAlias = () => {
-        setAlias('')
-        removeAliasMutation()
-    }
 
     return (
         <div className={"my-1"}>

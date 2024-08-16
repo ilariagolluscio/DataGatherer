@@ -1,27 +1,32 @@
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
-import {useSearchParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import fetchImageData from "../../queries/fetchImageData";
+import fetchImage from "../../queries/fetchImage";
 import {defaultBaseUrl} from "../../global_vars";
 import UsernameAnalysisCard from "../../components/analysis/UsenameAnalysisCard";
 import HashtagAnalysisGallery from "../../components/analysis/HashtagAnalysisGallery";
 import {useCookies} from "react-cookie";
 import fetchProject from "../../queries/fetchProject";
 import HotButton from "../../components/hotstuff/HotButton";
+import {edit_route} from "../data_editing_page/DataEditingPage";
+import {gather_route} from "../data_gatering_page/DataGatheringPage";
+import {overview_route} from "../project_overview_page/ProjectOverviewPage";
+
+export const structure_route =  (prjId, imgId) => `/prj/${prjId}/works/${imgId}/structure`
 
 const DataStructuringPage = () => {
-    const [searchParams] = useSearchParams();
-    const imageId = searchParams.get("img_id");
+    const {imgId,prjId} = useParams()
+
 
     const [cookies] = useCookies(['current_prj']);
 
     const { data: imgData, error, isFetching} = useQuery({
-        queryKey: ['oiok', imageId],
-        queryFn: () => (fetchImageData(imageId))
+        queryKey: ['fetchImageDataForStructure', imgId],
+        queryFn: () => (fetchImage(imgId))
     });
 
     const {data: projectData, isSuccess: isProjectDataSuccess} = useQuery({
-        queryKey: ['projectDataStructuringPage', imageId],
+        queryKey: ['projectDataStructuringPage', imgId],
         queryFn: () => fetchProject(cookies.prjId),
         retry: 1
     })
@@ -67,9 +72,9 @@ const DataStructuringPage = () => {
             rightChildren={
                 <div>
 
-                    <UsernameAnalysisCard imgId={imageId} />
+                    <UsernameAnalysisCard imgId={imgId} />
 
-                    <HashtagAnalysisGallery imgId={imageId}/>
+                    <HashtagAnalysisGallery imgId={imgId}/>
 
                 </div>
             }
@@ -80,7 +85,7 @@ const DataStructuringPage = () => {
                     <HotButton
                         style={{width: "20vw"}}
                         className={"btn btn-primary my-2 mx-2"}
-                        onClick={() => window.location.href = `/edit?img_id=${imageId}`}
+                        onClick={() => window.location.href = edit_route(prjId, imgId)}
                         uniqueHotKeyId={'data_str_back'}
                     >
                         Indietro
@@ -106,7 +111,10 @@ const DataStructuringPage = () => {
                                             className={"btn btn-primary my-2 mx-2"}
                                             disabled={!isProjectDataSuccess}
                                             onClick={() => {
-                                                window.location.href = `/gather?img_id=${projectData.next_image_to_analyze}`
+                                                window.location.href = gather_route(
+                                                    prjId,
+                                                    projectData.next_image_to_analyze
+                                                )
                                             }}
                                             uniqueHotKeyId={'data_str_prox'}
                                         >
@@ -118,7 +126,7 @@ const DataStructuringPage = () => {
                                         className={"btn btn-primary my-2 mx-2"}
                                         disabled={!isProjectDataSuccess}
                                         onClick={() => {
-                                            window.location.href = `/prj?id=${projectData.id}`
+                                            window.location.href = overview_route(prjId)
                                         }}
                                        uniqueHotKeyId={'data_str_conclude'}
                                 >

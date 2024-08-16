@@ -15,20 +15,13 @@ class ProjectDefaultCrop(models.Model):
         Project,
         on_delete=models.CASCADE
     )
-    imgCrop = models.ForeignKey(
-        ImgCrop,
-        on_delete=models.CASCADE,
-    )
-    fieldName = models.CharField(
-        max_length=30,
-        help_text='Questo campo è impostato, al salvataggio, uguale al valore di imgCrop di riferimento'
-    )
 
-    def save(
-        self, *args, **kwargs
-    ):
-        self.fieldName = self.imgCrop.fieldName
-        super().save(*args, **kwargs)
+    topPercent = models.FloatField()
+    leftPercent = models.FloatField()
+    heightPercent = models.FloatField()
+    widthPercent = models.FloatField()
+
+    fieldName = models.CharField(max_length=30)
 
     class Meta:
         unique_together = ['project', 'fieldName']

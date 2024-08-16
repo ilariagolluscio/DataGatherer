@@ -42,6 +42,7 @@ const Gallery = ({prjId, prjDataRefetch}) => {
                             isDataGathered={child.isDataGathered}
                             imgId={child.id}
                             is_similar_to_user_id={child.is_similar_to_user_id}
+                            prjId={prjId}
                         />
                     ))
                 }

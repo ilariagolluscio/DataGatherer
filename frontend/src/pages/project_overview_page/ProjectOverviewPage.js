@@ -1,16 +1,18 @@
 import Gallery from "../../components/gallery/Gallery";
-import {useSearchParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import fetchProject from "../../queries/fetchProject";
-import {useCookies} from "react-cookie";
 import {getBackupFile, getMatrixUrl, uploadUrl} from "../../api_router/fx_api";
-import {useEffect} from "react";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
+import {gather_route} from "../data_gatering_page/DataGatheringPage";
 
 
-const GatherButtons = ({next_image_to_analyze, are_all_images_analyzed}) => (
+export const overview_route =  (prjId) => `/prj/${prjId}/`
+
+
+const GatherButtons = ({next_image_to_analyze, are_all_images_analyzed, prjId}) => (
     !are_all_images_analyzed ?
-        <a href={analyzeNextImageButtonUrl(next_image_to_analyze)} className="btn btn-primary mx-1">
+        <a href={gather_route(prjId, next_image_to_analyze)} className="btn btn-primary mx-1">
             Raccogli dati dalle immagini non valutate
         </a>
         :
@@ -18,18 +20,13 @@ const GatherButtons = ({next_image_to_analyze, are_all_images_analyzed}) => (
 )
 
 
-const analyzeNextImageButtonUrl =  (next_image_to_analyze) => `/gather?img_id=${next_image_to_analyze}`
-
 
 
 const ProjectOverviewPage = () => {
-    const [searchParams] = useSearchParams();
-    const prjId = searchParams.get("id");
-    const [, setCookie] = useCookies(['current_prj']);
 
-    useEffect(() => {
-        setCookie('prjId', prjId)
-    }, []);
+    const { prjId } = useParams();
+
+
 
     const {
         data: projectData,
@@ -78,6 +75,7 @@ const ProjectOverviewPage = () => {
 
                 <div className={'m-2'}>
                     <GatherButtons
+                        prjId={prjId}
                         next_image_to_analyze={projectData.next_image_to_analyze}
                         are_all_images_analyzed={projectData.are_all_images_analyzed}
                     />

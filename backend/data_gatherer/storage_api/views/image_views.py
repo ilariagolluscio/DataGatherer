@@ -34,4 +34,15 @@ class ImgDataViewSet(CompleteModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, )
     filterset_fields = ['image', 'fieldName']
 
+    def create(self, request, *args, **kwargs):
+        serializer: ImgDataSerializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=False)
+
+        ImgData.objects.filter(
+            fieldName=serializer.data['fieldName'],
+            image_id=int(serializer.data['image'])
+        ).delete()
+
+        return super().create(request, *args, **kwargs)
+
 

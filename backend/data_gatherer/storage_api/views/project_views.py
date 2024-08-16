@@ -26,27 +26,12 @@ class ProjectDefaultCropViewSet(CompleteModelViewSet):
         serializer:ProjectDefaultCropSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=False)
 
-        img_crop = ImgCrop.objects.get(pk=serializer.data['imgCrop'])
+        ProjectDefaultCrop.objects.filter(
+            project=serializer.data['project'],
+            fieldName=serializer.data['fieldName']
+        ).delete()
 
-        correct_field_name = img_crop.fieldName
-
-        queryset = ProjectDefaultCrop.objects.filter(
-            project_id=serializer.data['project'],
-            fieldName=correct_field_name
-        )
-
-        queryset.delete()
-
-        serializer = self.get_serializer(data={
-            'project': serializer.data['project'],
-            'imgCrop': serializer.data['imgCrop'],
-            'fieldName': correct_field_name
-        })
-
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return super().create(request, *args, **kwargs)
 
 
 

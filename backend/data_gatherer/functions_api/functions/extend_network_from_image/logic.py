@@ -60,9 +60,6 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
 
             hashtag_entities.append(hashtag)
 
-    if len(hashtag_entities) == 0:
-        raise ValidationError('Nel testo, non sono presenti hashtags!')
-
     UserHashtagUse.objects.filter(
         image=image,
         project=image.project

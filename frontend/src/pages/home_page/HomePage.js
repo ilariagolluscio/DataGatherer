@@ -6,6 +6,7 @@ import {createProject} from "../../queries/createProject";
 import {defaultBaseUrl} from "../../global_vars";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
 import {adminUrl, uploadUrl} from "../../api_router/fx_api";
+import {overview_route} from "../project_overview_page/ProjectOverviewPage";
 
 
 const HomePage = () => {
@@ -44,7 +45,7 @@ const HomePage = () => {
             <Card title={child.name} rightAlignObjArray={[
 
                 <a
-                    href={`/prj?id=${child.id}&name=${child.name}`}
+                    href={overview_route(child.id)}
                     className="btn btn-primary m-2"
                 >
                     Entra

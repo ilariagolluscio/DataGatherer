@@ -2,8 +2,9 @@ import {defaultBaseUrl} from "../../global_vars";
 import {useMutation} from "@tanstack/react-query";
 import {deleteImage} from "../../queries/deleteImage";
 import {useRef} from "react";
+import {gather_route} from "../../pages/data_gatering_page/DataGatheringPage";
 
-const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id}) => {
+const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id, prjId}) => {
 
     const mainRef = useRef(null);
 
@@ -55,7 +56,7 @@ const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, 
                 <div className={"d-flex w-100 justify-content-center"}>
                     <button
                         disabled={isDataGathered}
-                        onClick={() => window.location.href = `/gather?img_id=${imgId}`}
+                        onClick={() => window.location.href = gather_route(prjId, imgId)}
                         className="btn btn-primary m-2" >ANYZ
                     </button>
 

@@ -3,13 +3,11 @@ import {canvasPreview} from "./canvasPreview";
 import Card from "../../generic/Card";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {createImageCrop} from "../../../queries/createImageCrop";
-import {patchDefaultCrop} from "../../../queries/patchDefaultCrop";
+
 import {doDefaultCrop} from "../../../queries/doDefaultCrop";
 import HotButton from "../../hotstuff/HotButton";
 import fetchImageCropAndLoadCrop from "../../../queries/fetchImageCropAndLoadCrop";
-
-
-
+import {createDefaultCrop} from "../../../queries/createDefaultCrop";
 
 
 const CompletedCanvas = ({previewCanvasRef}) => {
@@ -28,8 +26,6 @@ const CompletedCanvas = ({previewCanvasRef}) => {
 }
 
 
-
-
 const ImageAnalysisCard = ({
                                vhHeight,
                                title,
@@ -38,13 +34,13 @@ const ImageAnalysisCard = ({
                                imgRef,
                                setCrop,
                                imgId,
-                               percentCrop
+                               percentCrop,
+                               prjId
                            }) => {
 
 
+    const [isSetDefaultEnabled, setIsSetDefaultEnabled] = useState(false)
     const previewCanvasRef = useRef(null);
-    const [recognizedValue, setRecognizedValue] = useState(null)
-
 
 
 
@@ -61,43 +57,46 @@ const ImageAnalysisCard = ({
     })
 
 
-
-
-    const {mutate: createMutate} = useMutation({
-        queryKey: ['createImageCrop'],
-        mutationFn: createImageCrop,
+    const {mutate: doDefaultCropToTargetImageMutation} = useMutation({
+        queryKey: [`useDefaultCrops_${title}`],
+        mutationFn: () => doDefaultCrop({
+            prjId,
+            fieldName: title,
+            targetImg: imgId
+        }),
         retry: 1,
-        onSuccess: (data) => cropDataRefetch(),
+        onSuccess: () => cropDataRefetch(),
+        onError: (error) => {alert(`Errore: ${error}`)}
+    })
+
+
+    const {mutate: doImageCroppingMutation} = useMutation({
+        queryKey: ['createImageCrop'],
+        mutationFn: () => createImageCrop({
+            fieldName: title,
+            imgId,
+            percentCrop
+        }),
+        retry: 1,
+        onSuccess: (data) => {
+            setIsSetDefaultEnabled(true)
+            cropDataRefetch()
+        },
         onError: (error) => alert("Errore nella creazione del ritaglio!" + error.message)
     })
 
 
-
-    const {mutate: defaultCropMutate} = useMutation({
-        queryKey: ['useDefaultCrops'],
-        mutationFn: () => doDefaultCrop({
+    const {mutate: createDefaultCropMutation} = useMutation({
+        queryKey: ['setDefault'],
+        mutationFn: () => createDefaultCrop({
             fieldName: title,
-            targetImage: imgId
+            prjId,
+            percentCrop
         }),
         retry: 1,
-        onSuccess: () => cropDataRefetch(),
-        onError: (error) => alert("Errore nell'utilizzo del ritaglio di default. Prova" +
-            "a creare un nuovo ritaglio e poi impostarlo come ritaglio di default.")
-    })
-
-
-
-
-    const {mutate: setDefaultMutate} = useMutation({
-        queryKey: ['setDefault'],
-        mutationFn: () => patchDefaultCrop(cropData.id),
-        retry: 1,
         onSuccess: () => alert('Ritaglio impostato come default!'),
-        onError: () => alert('Errore nell\'impostazione del ritaglio')
+        onError: (error) => alert(`Errore nell'impostazione del ritaglio. Err: ${error}`)
     })
-
-
-
 
 
 
@@ -110,19 +109,14 @@ const ImageAnalysisCard = ({
             previewCanvasRef.current,
             completedCrop,
         )
+
         setIsCropEnabled(false)
         setCrop(null)
 
-        createMutate({
-            "fieldName": title,
-            "leftPercent": percentCrop.x,
-            "topPercent": percentCrop.y,
-            "heightPercent": percentCrop.height,
-            "widthPercent": percentCrop.width,
-            "recognizedText": "",
-            "image": imgId
-        })
+        doImageCroppingMutation()
     }
+
+
 
 
     if (error) {
@@ -136,28 +130,28 @@ const ImageAnalysisCard = ({
 
 
 
-    vhHeight = vhHeight || "15vh"
-
     return (
         <div className={"my-3"}>
-            <Card title={title}  >
-                <div style={{height: vhHeight}}
+            <Card title={title}>
+                <div style={{height: vhHeight || "15vh"}}
                      className={"w-100 d-flex justify-content-center p-3 border border-black"}>
-                    <CompletedCanvas
-                        previewCanvasRef={previewCanvasRef}/>
+                    <CompletedCanvas previewCanvasRef={previewCanvasRef}/>
 
                 </div>
 
                 <div className={"w-100 h-100 d-flex"}>
+
+
                     <div>
                         <HotButton
                             uniqueHotKeyId={`set_default_${title}`}
                             className={"btn btn-primary my-2 mx-2"}
-                            onClick={defaultCropMutate}
+                            onClick={doDefaultCropToTargetImageMutation}
                         >
                             Usa il ritaglio di default
                         </HotButton>
                     </div>
+
 
                     <div>
                         <HotButton
@@ -168,6 +162,7 @@ const ImageAnalysisCard = ({
                             Inizia il ritaglio immagine
                         </HotButton>
                     </div>
+
                     <div>
                         <HotButton
                             uniqueHotKeyId={`finish_crop_${title}`}
@@ -177,22 +172,21 @@ const ImageAnalysisCard = ({
                             Concludi ritaglio immagine
                         </HotButton>
                     </div>
-                    {
-                        completedCrop ?
-                            <div>
-                                <button
 
-                                    className={"btn btn-primary my-2 mx-2"}
-                                    onClick={setDefaultMutate}
-                                >
-                                    Salva il taglio come default
-                                </button>
-                            </div>
-                            : <></>
-                    }
 
+                    <div>
+                        <button
+                            disabled={!isSetDefaultEnabled}
+                            className={"btn btn-primary my-2 mx-2"}
+                            onClick={createDefaultCropMutation}
+                        >
+                            Salva il taglio come default
+                        </button>
+                    </div>
 
                 </div>
+
+
                 <div className={"mx-1"}>
                     <textarea
                         id={title}
@@ -203,6 +197,7 @@ const ImageAnalysisCard = ({
                         disabled={true}
                     />
                 </div>
+
             </Card>
         </div>
     )

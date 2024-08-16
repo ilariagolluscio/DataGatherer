@@ -1,48 +1,44 @@
 import SingleImgAnalysisLayout from "../../layouts/single_image_analysis_layout/SingleImgAnalysisLayout";
 import DataAnalysisCard from "../../components/analysis/DataAnalysisCard";
-import {useSearchParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {defaultBaseUrl} from "../../global_vars";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import fetchImageData from "../../queries/fetchImageData";
+import fetchImage from "../../queries/fetchImage";
 import {useRef, useState} from "react";
 import {saveReviewedData} from "../../queries/saveReviewedData";
 import {extendNetworkFromImage} from "../../queries/extendNetworkFromImage";
 import HotButton from "../../components/hotstuff/HotButton";
+import {structure_route} from "../data_structuring_page/DataStructuringPage";
+import {gather_route} from "../data_gatering_page/DataGatheringPage";
 
+export const edit_route =  (prjId, imgId) => `/prj/${prjId}/works/${imgId}/edit`
 
 const DataEditingPage = () => {
 
-    const [searchParams] = useSearchParams();
-    const usernameTARef = useRef(null);
-    const hashtagTARef = useRef(null);
-    const [userCropId, setUserCropId] = useState(null)
-    const [hashtagCropId, setHashtagCropId] = useState(null)
-    const imageId = searchParams.get("img_id");
-    const [hasDataBeenSaved, setHasDataBeenSaved] = useState(false)
+    const {imgId,prjId} = useParams()
 
+    const usernameSaveRef = useRef(null);
+    const hashtagSaveRef = useRef(null);
+
+    const [usernameSuccess, setUsernameSuccess] = useState(false)
+    const [hashtagSuccess, setHashtagSuccess] = useState(false)
+
+    const canMoveForwards = () => (
+         usernameSuccess && hashtagSuccess
+    )
 
     const { data: imgData, error, isFetching} = useQuery({
-        queryKey: ['get_scenario', imageId],
-        queryFn: () => (fetchImageData(imageId))
+        queryKey: ['get_scenario', imgId],
+        queryFn: () => (fetchImage(imgId))
     });
 
-    const {mutate: saveReviewedDataMutation} = useMutation({
-        mutationFn: (data) => {
-            setHasDataBeenSaved(false)
-            return saveReviewedData(data)
-        },
-        retry: 1,
-        onSuccess: () => {
-            setHasDataBeenSaved(true)
-        },
-        onError: (error) => alert("Errore! " + error.message)
-    })
-
     const {mutate: structureDataMutation} = useMutation({
-        mutationFn: extendNetworkFromImage,
+        mutationFn: () => extendNetworkFromImage({
+            targetImage: imgId
+        }),
         retry: 1,
         onSuccess: () => {
-            window.location.href = `/structure?img_id=${imageId}`
+            window.location.href = structure_route(prjId, imgId)
         },
         onError: (error) => {
             console.log(error)
@@ -51,28 +47,14 @@ const DataEditingPage = () => {
     })
 
     const handleForward = () => {
-        structureDataMutation({targetImage: imageId})
+        structureDataMutation({targetImage: imgId})
     }
 
 
 
     const handleSaveData = () => {
-        if (usernameTARef.current.value === ""){
-            alert("Non è possibile continuare se non è definito un nome utente!")
-            return
-        }
-
-        if (!hashtagTARef.current.value.includes('#')){
-            alert("Non è possibile continuare se non sono definiti hashtags!")
-            return
-        }
-
-        saveReviewedDataMutation({
-            "usernameImgCrop": userCropId,
-            "hashtagImgCrop": hashtagCropId,
-            "usernameReviewedText": usernameTARef.current.value,
-            "hashtagReviewedText": hashtagTARef.current.value
-        })
+        usernameSaveRef.current.click()
+        hashtagSaveRef.current.click()
     }
 
 
@@ -116,22 +98,22 @@ const DataEditingPage = () => {
                     <DataAnalysisCard
                         title={"Username"}
                         alreadyExists={false}
-                        imgId={imageId}
-                        textAreaRef={usernameTARef}
-                        setCropId={setUserCropId}
+                        imgId={imgId}
+                        btnRef={usernameSaveRef}
                         rows={4}
+                        setParentSuccess={setUsernameSuccess}
                     />
 
                     <DataAnalysisCard
                         title={"Hashtags"}
-                        rows={10}
-                        imgId={imageId}
-                        textAreaRef={hashtagTARef}
-                        setCropId={setHashtagCropId}
+                        rows={6}
+                        imgId={imgId}
+                        btnRef={hashtagSaveRef}
                         infoText={"Tutti gli hashtags verranno creati a lettere minuscole e la " +
                             "punteggiatura, all'interno o alla fine degli hashtags " +
                             "(!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~) non verrà considerata. Gli hashtags " +
                             "possono essere scritti senza spazi tra uno e l'altro (i.e. #ciao#sus)"}
+                        setParentSuccess={setHashtagSuccess}
                     />
 
                 </div>
@@ -143,19 +125,29 @@ const DataEditingPage = () => {
                     <HotButton
                         style={{width: "20vw"}}
                         className={`btn my-2 mx-2 btn-primary`}
+                        onClick={() => window.location.href = gather_route(prjId, imgId)}
+                        uniqueHotKeyId={'save_data_data_edit'}
+                    >
+                        Indietro
+                    </HotButton>
+
+                    <HotButton
+                        style={{width: "20vw"}}
+                        className={`btn my-2 mx-2 btn-primary`}
                         onClick={handleSaveData}
                         uniqueHotKeyId={'save_data_data_edit'}
                     >
-                        Salva Dati
+                        Salva tutti i dati
                     </HotButton>
+
                     <HotButton
-                        disabled={!hasDataBeenSaved}
+                        disabled={!canMoveForwards()}
                         style={{width: "20vw"}}
                         className={"btn btn-primary my-2 mx-2"}
                         uniqueHotKeyId={'next_data_edit'}
                         onClick={handleForward}
                     >
-                        Prosegui
+                        Estendi network e procedi
                     </HotButton>
                 </div>
             }

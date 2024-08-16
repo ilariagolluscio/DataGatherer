@@ -1,19 +1,14 @@
 from storage_api.models.image_models import ImgCrop, Image
+from storage_api.models.project_models import ProjectDefaultCrop
 
 
-def apply_default_crop_to_target_image(img_instance: Image, crop_instance: ImgCrop):
-    isDefault = False
-
-    if crop_instance.image.pk == img_instance.pk:
-        isDefault = True
-
+def apply_default_crop_to_target_image(img_instance: Image, defaultCrop: ProjectDefaultCrop):
     newCrop = ImgCrop(
-        fieldName=crop_instance.fieldName,
-        topPercent=crop_instance.topPercent,
-        leftPercent=crop_instance.leftPercent,
-        widthPercent=crop_instance.widthPercent,
-        heightPercent=crop_instance.heightPercent,
-        isDefault=isDefault,
+        fieldName=defaultCrop.fieldName,
+        topPercent=defaultCrop.topPercent,
+        leftPercent=defaultCrop.leftPercent,
+        widthPercent=defaultCrop.widthPercent,
+        heightPercent=defaultCrop.heightPercent,
         recognizedText="",
         image=img_instance
     )

@@ -34,6 +34,9 @@ class ImgData(models.Model):
         on_delete=models.CASCADE
     )
 
+    class Meta:
+        unique_together = ['fieldName', 'image']
+
 
 class ImgCrop(models.Model):
     fieldName = models.CharField(max_length=30)

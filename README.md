@@ -2,11 +2,12 @@
 
 This project is aimed at the creation of a software that allows for sem i-automatic extraction of specific data from a given set of images.
 
-## A word of caution
 
-*This software has been written in the least time possible. There are still bugs bad and code standard is low.
-It may not be improved.
-Caution and frequent backing-up is advised.*
+## Precautions
+
+This code is made to be run **locally**. It does not manage access to data, nor protects from unauthorized access. 
+Please, double check that port 8080 is not reachable from outside your trusted network.
+
 
 ## Requirements
 

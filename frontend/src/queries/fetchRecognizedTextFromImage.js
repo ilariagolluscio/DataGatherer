@@ -5,11 +5,9 @@ const fetchRecognizedTextFromImage = async (imgId, fieldName) => {
 
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
 
-    const response = await axios.get(
+    const {data} = await axios.get(
         base + `/storage_api/img_crops/?image=${imgId}&fieldName=${fieldName}`,
     )
-
-    const data = response.data
 
     if (!Array.isArray(data)){
         throw Error("the result is not an array!")
