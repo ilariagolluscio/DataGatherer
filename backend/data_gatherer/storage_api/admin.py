@@ -4,7 +4,6 @@ from data_gatherer.admin_sites import global_admin_site
 from storage_api.models.data_models import Hashtag, IGUser, UserHashtagUse
 from storage_api.models.image_models import Image, ImgCrop
 from storage_api.models.project_models import *
-from functions_api.functions.upload_pictures.models import ImageFile
 
 
 class ProjectEntityAdmin(admin.ModelAdmin):

@@ -4,7 +4,10 @@ from storage_api.models.image_models import ImgCrop
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=50,
+        unique=True
+    )
 
     def __str__(self):
         return "%s" % self.name

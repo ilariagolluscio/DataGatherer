@@ -1,7 +1,6 @@
 from django import forms
 
 from storage_api.models.project_models import Project
-from .models import ImageFile
 
 
 class ImagesForm(forms.Form):

@@ -55,7 +55,7 @@ class IGUser(models.Model):
     def save(self, *args, **kwargs):
         if not self.alias:
             self.alias = None
-        super(IGUser, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return "PRJ: %s, %s" % (self.project.name, self.name)
@@ -81,5 +81,3 @@ class UserHashtagUse(models.Model):
 
     class Meta:
         unique_together = ['image', 'hashtag', 'igUser', 'project']
-
-

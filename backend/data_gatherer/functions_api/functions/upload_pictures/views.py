@@ -5,14 +5,13 @@ from django.shortcuts import render, redirect
 
 from storage_api.models.project_models import Project
 from .forms import ImagesForm
-from .models import ImageFile
 from storage_api.models.image_models import Image
 from functions_api.functions.upload_pictures.logic import upload_files
 
 
 # Create your views here.
 def index(request):
-    images = ImageFile.objects.all()
+    images = Image.objects.all()
     context = {'images': images}
     return render(request, "index.html", context)
 

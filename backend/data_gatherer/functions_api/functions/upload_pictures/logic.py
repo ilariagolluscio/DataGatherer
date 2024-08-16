@@ -59,17 +59,17 @@ def check_similarity_between_project_images(project, images_to_check):
         for compare_to_img in prj_images.exclude(
                 pk=img.pk,
         ):
-            if img.imagefile.average_hash is None or img.imagefile.average_hash is '':
-                img.imagefile.average_hash = average_hash(img.imagefile.file.path)
-                img.imagefile.save()
+            if img.average_hash is None or img.average_hash is '':
+                img.average_hash = average_hash(img.file.path)
+                img.save()
 
-            if compare_to_img.imagefile.average_hash is None or compare_to_img.imagefile.average_hash is '':
-                compare_to_img.imagefile.average_hash = average_hash(compare_to_img.imagefile.file.path)
-                compare_to_img.imagefile.save()
+            if compare_to_img.average_hash is None or compare_to_img.average_hash is '':
+                compare_to_img.average_hash = average_hash(compare_to_img.file.path)
+                compare_to_img.save()
 
             if _are_hashes_similar(
-                img.imagefile.average_hash,
-                compare_to_img.imagefile.average_hash,
+                img.average_hash,
+                compare_to_img.average_hash,
                 2
             ):
                 print('Images %s and %s are similar! ' % (compare_to_img.userId, img.userId))
@@ -88,7 +88,6 @@ def check_similarity_between_project_images(project, images_to_check):
 
 
 def upload_files(files, project):
-    from functions_api.functions.upload_pictures.models import ImageFile
     from storage_api.models.image_models import Image as ModelImage
     images_to_check = []
     for file in files:
@@ -97,11 +96,10 @@ def upload_files(files, project):
         if entity is not None:
             value = entity.userId + 1
         image = ModelImage(
+            file=file,
             userId=value,
             project=project
         )
         image.save()
-        image_ins = ImageFile(file=file, referencesImage=image)
-        image_ins.save()
         images_to_check.append(image)
     check_similarity_between_project_images(project, images_to_check)

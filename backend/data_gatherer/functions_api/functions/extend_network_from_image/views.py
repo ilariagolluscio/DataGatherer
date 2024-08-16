@@ -25,7 +25,7 @@ class ExtendNetworkFromImageView(generics.CreateAPIView):
         except ObjectDoesNotExist or MultipleObjectsReturned:
             return Response("Non esiste alcun dato Username nel sistema!", HTTP_404_NOT_FOUND)
         except MultipleObjectsReturned:
-            return Response("Esiste più di un dato Username nel sistema!", HTTP_404_NOT_FOUND)
+            return Response("Esiste più di un dato Username nel sistema!", HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
             hashtags_data:ImgData = ImgData.objects.get(
@@ -35,7 +35,7 @@ class ExtendNetworkFromImageView(generics.CreateAPIView):
         except ObjectDoesNotExist:
             return Response("Non esiste alcun dato Hashtags nel sistema!", HTTP_404_NOT_FOUND)
         except MultipleObjectsReturned:
-            return Response("Esiste più di un dato Hashtags nel sistema!", HTTP_404_NOT_FOUND)
+            return Response("Esiste più di un dato Hashtags nel sistema!", HTTP_500_INTERNAL_SERVER_ERROR)
 
         extend_network_from_image(
             username_data.value,

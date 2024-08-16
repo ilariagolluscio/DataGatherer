@@ -5,12 +5,14 @@ from services.ocr_services import read_text_from_img
 
 
 class Image(models.Model):
+    file = models.FileField(upload_to='imgs/', unique=True)
     userId = models.IntegerField()
     isDataGathered = models.BooleanField(default=False)
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE
     )
+    average_hash = models.CharField(max_length=4000, blank=True, null=True)
     isSimilarTo = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -56,7 +58,7 @@ class ImgCrop(models.Model):
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         self.recognizedText = read_text_from_img(
-            self.image.imagefile.file.path,
+            self.image.file.path,
             self.topPercent,
             self.leftPercent,
             self.widthPercent,

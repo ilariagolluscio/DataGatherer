@@ -11,7 +11,7 @@ class ImageSerializer(serializers.ModelSerializer):
         return obj.isSimilarTo.userId
 
     def get_image_file_url(self, obj: Image):
-        return obj.imagefile.file.url
+        return obj.file.url
 
     class Meta:
         model = Image
