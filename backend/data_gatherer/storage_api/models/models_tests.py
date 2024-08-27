@@ -152,8 +152,8 @@ class ImgCropModelTestCase(TestCase):
             image=local_img
         )
 
-        print("B iwa")
-        print('\'%s\'' % img_crop.recognizedText)
+
+
 
         assert img_crop.recognizedText.strip() == 'niolajet + Follow'
 
@@ -185,8 +185,8 @@ class ImgCropModelTestCase(TestCase):
             image=local_img
         )
 
-        print("A iwa")
-        print('\'%s\'' % img_crop.recognizedText)
+
+
 
         if img_crop.recognizedText == '':
             img_crop.recognizedText = 'N.A.'

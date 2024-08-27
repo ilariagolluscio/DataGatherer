@@ -65,8 +65,8 @@ class ImgCropViewSetTestCase(TestCase):
 
     def test_creation_with_pre_existing_entities(self):
         c = Client()
-        print('swa')
-        print(pre_path + '/storage_api/img_crops/')
+
+
         c.post(pre_path + '/storage_api/img_crops/', {
             'fieldName': 'Username',
             'topPercent': 0,
