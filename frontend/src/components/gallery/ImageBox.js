@@ -4,7 +4,7 @@ import {deleteImage} from "../../queries/deleteImage";
 import {useRef} from "react";
 import {gather_route} from "../../pages/data_gatering_page/DataGatheringPage";
 
-const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id, prjId}) => {
+const ImageBox = ({showImage, prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, is_similar_to_user_id, prjId}) => {
 
     const mainRef = useRef(null);
 
@@ -43,7 +43,11 @@ const ImageBox = ({prjDataRefetch, userId, isDataGathered, imageFileUrl, imgId, 
 
                 <div className={"d-flex justify-content-center w-100"}>
                     <div style={specificStyle}>
-                        <img src={source} className={"h-100 w-100"} alt={"immagine da lavoro"}/>
+                        {
+                            showImage ?
+                                <img src={source} className={"h-100 w-100"} alt={"immagine da lavoro"}/>
+                                : <></>
+                        }
                     </div>
                 </div>
 

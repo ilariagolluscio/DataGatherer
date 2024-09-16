@@ -205,4 +205,101 @@ class ExtendNetworkFromImage(TestCase):
 
         raise Exception("Non dovrebbe funzionare!")
 
-        
+    def test_associations_are_deleted_and_written_at_each_extension(self):
+
+        extend_network_from_image(
+            'pippo',
+            '#ciao #sus',
+            self.project,
+            self.image
+        )
+
+        user = IGUser.objects.get(
+            project=self.project,
+            name='pippo',
+            description=None,
+            createdFromImage=self.image
+        )
+
+        h1 = Hashtag.objects.get(
+            project=self.project,
+            content='ciao',
+            createdFromImage=self.image
+        )
+
+        h2 = Hashtag.objects.get(
+            project=self.project,
+            content='sus',
+            createdFromImage=self.image
+        )
+
+        extend_network_from_image(
+            'pipp',
+            '#ciao #sus',
+            self.project,
+            self.image
+        )
+
+        extend_network_from_image(
+            'pipp',
+            '#ciaos #suss',
+            self.project,
+            self.image
+        )
+
+        user2 = IGUser.objects.get(
+            project=self.project,
+            name='pipp',
+            description=None,
+            createdFromImage=self.image
+        )
+
+        ha = Hashtag.objects.get(
+            project=self.project,
+            content='ciaos',
+            createdFromImage=self.image
+        )
+
+        hb = Hashtag.objects.get(
+            project=self.project,
+            content='suss',
+            createdFromImage=self.image
+        )
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            igUser=user
+        ).count() == 0
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            hashtag= h1
+        ).count() == 0
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            hashtag=h2
+        ).count() == 0
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            igUser=user2
+        ).count() == 2
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            hashtag=ha
+        ).count() == 1
+
+        assert UserHashtagUse.objects.filter(
+            image=self.image,
+            project=self.image.project,
+            hashtag=hb
+        ).count() == 1
+
+

@@ -25,6 +25,8 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
     if img_hashtags_text is None or img_username_text is None:
         raise ValidationError("Attenzione! Non sono ancora stati raccolti dati dall'immagine!", status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    # vengono eliminate le associazioni create precedentemente
+
     img_username_text = (img_username_text
                          .replace('\n', ' ')
                          .strip())

@@ -19,6 +19,7 @@ class IGUserAdmin(ProjectEntityAdmin):
 
 
 class UserHashtagUseAdmin(ProjectEntityAdmin):
+    list_per_page = 30
     list_display = ProjectEntityAdmin.list_display + [
         'hashtag',
         'igUser',

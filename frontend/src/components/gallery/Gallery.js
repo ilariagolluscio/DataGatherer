@@ -4,7 +4,7 @@ import fetchProjects from "../../queries/fetchProjects";
 import fetchImages from "../../queries/fetchImages";
 
 
-const Gallery = ({prjId, prjDataRefetch}) => {
+const Gallery = ({prjId, prjDataRefetch, showImages}) => {
 
     const endpoint = `/storage_api/images/?project=${prjId}`
 
@@ -35,6 +35,7 @@ const Gallery = ({prjId, prjDataRefetch}) => {
                 {
                     data.map((child, i) => (
                         <ImageBox
+                            showImage={showImages}
                             prjDataRefetch={prjDataRefetch}
                             key={i}
                             userId={child.userId}

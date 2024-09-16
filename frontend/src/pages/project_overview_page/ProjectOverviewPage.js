@@ -5,6 +5,7 @@ import fetchProject from "../../queries/fetchProject";
 import {getBackupFile, getMatrixUrl, uploadUrl} from "../../api_router/fx_api";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
 import {gather_route} from "../data_gatering_page/DataGatheringPage";
+import {useState} from "react";
 
 
 export const overview_route =  (prjId) => `/prj/${prjId}/`
@@ -26,6 +27,7 @@ const ProjectOverviewPage = () => {
 
     const { prjId } = useParams();
 
+    const [showImages, setShowImages] = useState(false)
 
 
     const {
@@ -73,6 +75,10 @@ const ProjectOverviewPage = () => {
                     <a href={getBackupFile()} className="btn btn-primary mx-1">Scarica file di backup</a>
                 </div>,
 
+                <div className={"m-2"}>
+                    <a onClick={() => setShowImages(!showImages)} className="btn btn-primary mx-1">Mostra o nascondi immagini</a>
+                </div>,
+
                 <div className={'m-2'}>
                     <GatherButtons
                         prjId={prjId}
@@ -92,7 +98,7 @@ const ProjectOverviewPage = () => {
                         tasto - tastiera, eliminare i cookies della pagina e ricaricare.
                     </div>
 
-                    <Gallery prjDataRefetch={projectDataRefetch} prjId={prjId}/>
+                    <Gallery prjDataRefetch={projectDataRefetch} prjId={prjId} showImages={showImages}/>
 
                 </div>
             }

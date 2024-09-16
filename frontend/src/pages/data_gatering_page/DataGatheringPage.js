@@ -82,17 +82,6 @@ const DataGatheringPage = () => {
             rightChildren={
                 <div>
 
-                    <ImageAnalysisCard
-                        imgId={imgData.id}
-                        title={"Username"}
-                        completedCrop={completedCrop}
-                        setIsCropEnabled={setIsCropEnabled}
-                        imgRef={imgRef}
-                        setCrop={setCrop}
-                        percentCrop={percentCrop}
-                        prjId={prjId}
-                    />
-
 
                     <ImageAnalysisCard
                         imgId={imgData.id}
@@ -105,6 +94,20 @@ const DataGatheringPage = () => {
                         percentCrop={percentCrop}
                         prjId={prjId}
                     />
+
+                    <ImageAnalysisCard
+                        imgId={imgData.id}
+                        title={"Username"}
+                        completedCrop={completedCrop}
+                        setIsCropEnabled={setIsCropEnabled}
+                        imgRef={imgRef}
+                        setCrop={setCrop}
+                        percentCrop={percentCrop}
+                        prjId={prjId}
+                    />
+
+
+
 
                 </div>
             }
