@@ -6,12 +6,14 @@ class HashtagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag
         fields = '__all__'
+        read_only_fields = ['author']
 
 
 class IGUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = IGUser
         fields = '__all__'
+        read_only_fields = ['author']
 
 
 class UserHashtagUseSerializer(serializers.ModelSerializer):
@@ -21,5 +23,6 @@ class UserHashtagUseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserHashtagUse
         fields = '__all__'
+        read_only_fields = ['author']
 
 

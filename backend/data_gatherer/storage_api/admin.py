@@ -4,6 +4,8 @@ from data_gatherer.admin_sites import global_admin_site
 from storage_api.models.data_models import Hashtag, IGUser, UserHashtagUse
 from storage_api.models.image_models import Image, ImgCrop
 from storage_api.models.project_models import *
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 
 class ProjectEntityAdmin(admin.ModelAdmin):
@@ -39,4 +41,4 @@ global_admin_site.register(Hashtag, ProjectEntityAdmin)
 global_admin_site.register(IGUser, IGUserAdmin)
 global_admin_site.register(UserHashtagUse, UserHashtagUseAdmin)
 global_admin_site.register(ProjectDefaultCrop, ProjectEntityAdmin)
-
+global_admin_site.register(User, UserAdmin)

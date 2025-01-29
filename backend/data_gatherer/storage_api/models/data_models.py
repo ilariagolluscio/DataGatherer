@@ -2,9 +2,14 @@ from django.db import models
 from storage_api.models.image_models import Image
 from storage_api.models.project_models import Project
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 
 class Hashtag(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE
@@ -24,6 +29,10 @@ class Hashtag(models.Model):
 
 
 class IGUser(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE
@@ -62,6 +71,10 @@ class IGUser(models.Model):
 
 
 class UserHashtagUse(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.RESTRICT

@@ -3,9 +3,14 @@ from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from functions_api.functions.upload_pictures.logic import check_similarity_between_project_images
 from services.ocr_services import read_text_from_img
+from django.contrib.auth.models import User
 
 
 class Image(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     file = models.FileField(upload_to='imgs/', unique=True)
     userId = models.IntegerField()
     isDataGathered = models.BooleanField(default=False)
@@ -29,6 +34,10 @@ class Image(models.Model):
 
 
 class ImgData(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     fieldName = models.CharField(max_length=30)
     value = models.TextField(max_length=5000)
 
@@ -42,6 +51,10 @@ class ImgData(models.Model):
 
 
 class ImgCrop(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     fieldName = models.CharField(max_length=30)
     topPercent = models.FloatField()
     leftPercent = models.FloatField()

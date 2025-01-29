@@ -23,13 +23,27 @@ from storage_api.admin import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from django.contrib.auth.views import LogoutView
+
 
 pre_path = os.environ.get("PRE_PATH", default="")
+
+
+token_urlpatterns = [
+    path('obtain/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
 
 urlpatterns = [
     path('admin/', global_admin_site.urls),
     path('fx_api/', include(fx_urls)),
     path('storage_api/', include(storage_urls)),
+    path('token/', include(token_urlpatterns)),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

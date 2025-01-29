@@ -1,0 +1,29 @@
+### Obtain Token
+POST http://localhost:8000/token/obtain/
+Content-Type: application/x-www-form-urlencoded
+
+username=sofia&password=Sofia@plux8500
+
+> {%
+    client.global.set("auth_token", response.body.access);
+    client.global.set("refresh", response.body.refresh);
+%}
+
+### Use Token to Get Hashtags
+GET http://localhost:8000/storage_api/hashtags/
+Authorization: Bearer {{auth_token}}
+
+
+### Refresh
+POST http://localhost:8000/token/refresh/
+Content-Type: application/x-www-form-urlencoded
+
+refresh={{refresh}}
+
+> {%
+    client.global.set("auth_token_2", response.body.access);
+%}
+
+### Use Token to Get Hashtags
+GET http://localhost:8000/storage_api/hashtags/
+Authorization: Bearer {{auth_token_2}}

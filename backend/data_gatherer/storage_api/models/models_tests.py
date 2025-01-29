@@ -3,6 +3,8 @@ from django.test import TestCase
 from storage_api.models.project_models import *
 from storage_api.models.image_models import *
 from storage_api.models.data_models import *
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 
 class HashtagModelTestCase(TestCase):
@@ -12,19 +14,36 @@ class HashtagModelTestCase(TestCase):
 class IgModelTestCase(TestCase):
 
     def setUp(self):
+        User.objects.create_user(
+            email="test@test.it",
+            username='test',
+            password='test',
+        )
+
+        author = authenticate(
+            username="test",
+            password='test'
+        )
+
         self.project = Project.objects.create(
-            name='TestPrj'
+            name='TestPrj',
+            author_id=author.pk
         )
 
     def test_ig_user_matrix_name_with_alias(self):
         name = 'Pippo'
         alias = 'Geronimo'
+        author = authenticate(
+            username="test",
+            password='test'
+        )
 
         ig_user = IGUser.objects.create(
             project=self.project,
             name=name,
             createdFromImage=None,
-            alias=alias
+            alias=alias,
+            author_id=author.pk
         )
 
         assert ig_user.matrix_name == "%s (%s)" % (alias, name)
@@ -50,7 +69,11 @@ class IgModelTestCase(TestCase):
             project=self.project,
             name=name,
             createdFromImage=None,
-            alias=alias
+            alias=alias,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
         assert ig_user.alias is None
@@ -73,8 +96,18 @@ class ImgCropModelTestCase(TestCase):
     def setUp(self):
         from django.conf import settings
 
+        User.objects.create_user(
+            email="test@test.it",
+            username='test',
+            password='test',
+        )
+
         self.project = Project.objects.create(
-            name='Test'
+            name='Test',
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
         with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
@@ -85,7 +118,11 @@ class ImgCropModelTestCase(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=authenticate(
+                    username="test",
+                    password='test'
+                )
             )
 
     def tearDown(self):
@@ -101,7 +138,11 @@ class ImgCropModelTestCase(TestCase):
             widthPercent=0.2,
             recognizedText='4w3r904g',
             reviewedText='t4ej2',
-            image=self.image
+            image=self.image,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
     def test_save_new_entity_with_pre_existing_entities(self):
@@ -113,7 +154,11 @@ class ImgCropModelTestCase(TestCase):
             widthPercent=0.2,
             recognizedText='4w3r904g',
             reviewedText='t4ej2',
-            image=self.image
+            image=self.image,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
         ImgCrop.objects.create(
@@ -124,7 +169,11 @@ class ImgCropModelTestCase(TestCase):
             widthPercent=0.2,
             recognizedText='4w3r904g',
             reviewedText='t4ej2',
-            image=self.image
+            image=self.image,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
     def test_recognize_text_from_readable_image(self):
@@ -138,7 +187,11 @@ class ImgCropModelTestCase(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=authenticate(
+                    username="test",
+                    password='test'
+                )
             )
 
         img_crop = ImgCrop.objects.create(
@@ -149,11 +202,12 @@ class ImgCropModelTestCase(TestCase):
             widthPercent=100,
             recognizedText='4w3r904g',
             reviewedText='t4ej2',
-            image=local_img
+            image=local_img,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
-
-
-
 
         assert img_crop.recognizedText.strip() == 'niolajet + Follow'
 
@@ -171,7 +225,11 @@ class ImgCropModelTestCase(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=authenticate(
+                    username="test",
+                    password='test'
+                )
             )
 
         img_crop = ImgCrop.objects.create(
@@ -182,11 +240,12 @@ class ImgCropModelTestCase(TestCase):
             widthPercent=100,
             recognizedText='4w3r904g',
             reviewedText='t4ej2',
-            image=local_img
+            image=local_img,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
-
-
-
 
         if img_crop.recognizedText == '':
             img_crop.recognizedText = 'N.A.'
@@ -207,7 +266,11 @@ class ImgCropModelTestCase(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=authenticate(
+                    username="test",
+                    password='test'
+                )
             )
 
         try:
@@ -220,7 +283,8 @@ class ImgCropModelTestCase(TestCase):
                 widthPercent=0,
                 recognizedText='4w3r904g',
                 reviewedText='t4ej2',
-                image=local_img
+                image=local_img,
+                author=authenticate(username="test", password='test')
             )
 
         except ValidationError:

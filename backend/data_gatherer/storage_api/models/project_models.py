@@ -1,9 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from storage_api.models.image_models import ImgCrop
 
 
 class Project(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     name = models.CharField(
         max_length=50,
         unique=True
@@ -14,6 +19,10 @@ class Project(models.Model):
 
 
 class ProjectDefaultCrop(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE
