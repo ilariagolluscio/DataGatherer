@@ -6,17 +6,17 @@ from storage_api.models.project_models import *
 from storage_api.serializers.project_serializers import *
 from django_filters import rest_framework as filters
 
-from storage_api.views.common.common_views import CompleteModelViewSet
+from storage_api.views.common.common_views import OwnedInstancesCompleteModelViewSet
 
 
-class ProjectViewSet(CompleteModelViewSet):
+class ProjectViewSet(OwnedInstancesCompleteModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = []
 
 
-class ProjectDefaultCropViewSet(CompleteModelViewSet):
+class ProjectDefaultCropViewSet(OwnedInstancesCompleteModelViewSet):
     queryset = ProjectDefaultCrop.objects.all()
     serializer_class = ProjectDefaultCropSerializer
     filter_backends = (filters.DjangoFilterBackend,)

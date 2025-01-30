@@ -1,5 +1,6 @@
 import axios from "axios";
 import {defaultBaseUrl} from "../global_vars";
+import getAuthAxiosConfig from "./common/getAuthAxiosConfig";
 
 export const extendNetworkFromImage = async ({targetImage}) => {
     if (!targetImage){
@@ -8,9 +9,10 @@ export const extendNetworkFromImage = async ({targetImage}) => {
 
     const base = process.env.REACT_APP_API_URL || defaultBaseUrl
     const response = await axios.post(
-        base + '/fx_api/extend/',
+        base + '/b/fx_api/extend/',
         {
             targetImage
-        });
+        },
+        await getAuthAxiosConfig());
     return response.data;
 };

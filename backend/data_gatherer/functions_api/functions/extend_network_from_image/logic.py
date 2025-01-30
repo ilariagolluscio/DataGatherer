@@ -42,7 +42,8 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
         user = IGUser.objects.create(
             project=project,
             name=img_username_text,
-            createdFromImage=image
+            createdFromImage=image,
+            author=project.author
         )
     else:
         user = user_queryset.last()
@@ -64,7 +65,8 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
                 hashtag = Hashtag.objects.create(
                     project=project,
                     content=hashtag_content,
-                    createdFromImage=image
+                    createdFromImage=image,
+                    author=project.author
                 )
             else:
                 hashtag = hashtag_queryset.last()
@@ -82,7 +84,8 @@ def extend_network_from_image(img_username_text, img_hashtags_text:str, project,
             project=project,
             igUser=user,
             hashtag=hashtag_entity,
-            image=image
+            image=image,
+            author=project.author
         )
 
     image.isDataGathered = True

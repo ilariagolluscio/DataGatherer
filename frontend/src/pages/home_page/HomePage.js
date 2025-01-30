@@ -40,8 +40,8 @@ const HomePage = () => {
     };
 
 
-    const ProjectCard = ({child, key}) => (
-        <div key={key} className={"my-5 w-75"}>
+    const ProjectCard = ({child}) => (
+        <div className={"my-5 w-75"}>
             <Card title={child.name} rightAlignObjArray={[
 
                 <a

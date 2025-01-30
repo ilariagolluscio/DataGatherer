@@ -1,14 +1,16 @@
 import axios from "axios";
 import {defaultBaseUrl} from "../global_vars";
+import getAuthAxiosConfig from "./common/getAuthAxiosConfig";
 
 export const doDefaultCrop = async ({prjId, fieldName, targetImg}) => {
     const base = process.env.REACT_APP_API_URL || defaultBaseUrl
 
     const {data: res} = await axios.get(
-        base + `/storage_api/prj_default_crop/?project=${prjId}&fieldName=${fieldName}`
+        base + `/b/storage_api/prj_default_crop/?project=${prjId}&fieldName=${fieldName}`,
+        await getAuthAxiosConfig(),
     )
 
-    console.log(base + `/storage_api/prj_default_crop/?project=${prjId}&fieldName=${fieldName}`)
+    console.log(base + `/b/storage_api/prj_default_crop/?project=${prjId}&fieldName=${fieldName}`)
 
     console.log(res)
 
@@ -29,8 +31,9 @@ export const doDefaultCrop = async ({prjId, fieldName, targetImg}) => {
 
 
     const response = await axios.post(
-        base + '/fx_api/default_crop/',
-        {fieldName: fieldName, targetImage: targetImg, project: prjId}
+        base + '/b/fx_api/default_crop/',
+        {fieldName: fieldName, targetImage: targetImg, project: prjId},
+        await getAuthAxiosConfig()
     );
 
     return response.data;

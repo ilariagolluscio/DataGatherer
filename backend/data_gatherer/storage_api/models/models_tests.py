@@ -56,7 +56,11 @@ class IgModelTestCase(TestCase):
             project=self.project,
             name=name,
             createdFromImage=None,
-            alias=alias
+            alias=alias,
+            author=authenticate(
+                username="test",
+                password='test'
+            )
         )
 
         assert ig_user.matrix_name == "%s" % name

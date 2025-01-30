@@ -1,5 +1,6 @@
 import axios from "axios";
 import {defaultBaseUrl} from "../global_vars";
+import getAuthAxiosConfig from "./common/getAuthAxiosConfig";
 
 export const createDefaultCrop = async ({fieldName, prjId, percentCrop}) => {
     if (!fieldName || !prjId || !percentCrop) {
@@ -20,7 +21,7 @@ export const createDefaultCrop = async ({fieldName, prjId, percentCrop}) => {
 
     const base = process.env.REACT_APP_API_URL || defaultBaseUrl
     const response = await axios.post(
-        base + '/storage_api/prj_default_crop/',
+        base + '/b/storage_api/prj_default_crop/',
         {
             "topPercent": percentCrop.y,
             "leftPercent": percentCrop.x,
@@ -28,6 +29,7 @@ export const createDefaultCrop = async ({fieldName, prjId, percentCrop}) => {
             "widthPercent": percentCrop.width,
             "fieldName": fieldName,
             "project": prjId,
-        });
+        },
+        await getAuthAxiosConfig());
     return response.data;
 };

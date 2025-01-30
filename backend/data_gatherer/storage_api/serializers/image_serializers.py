@@ -16,15 +16,18 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = '__all__'
+        read_only_fields = ['author']
 
 
 class ImgDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImgData
         fields = '__all__'
+        read_only_fields = ['author']
 
 
 class ImgCropSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImgCrop
         fields = '__all__'
+        read_only_fields = ['author']

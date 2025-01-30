@@ -10,7 +10,8 @@ def apply_default_crop_to_target_image(img_instance: Image, defaultCrop: Project
         widthPercent=defaultCrop.widthPercent,
         heightPercent=defaultCrop.heightPercent,
         recognizedText="",
-        image=img_instance
+        image=img_instance,
+        author = defaultCrop.project.author,
     )
     newCrop.save()
     return newCrop

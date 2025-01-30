@@ -11,8 +11,10 @@ class Project(models.Model):
     )
     name = models.CharField(
         max_length=50,
-        unique=True
     )
+
+    class Meta:
+        unique_together = ['author', 'name']
 
     def __str__(self):
         return "%s" % self.name
@@ -37,6 +39,3 @@ class ProjectDefaultCrop(models.Model):
 
     class Meta:
         unique_together = ['project', 'fieldName']
-
-
-

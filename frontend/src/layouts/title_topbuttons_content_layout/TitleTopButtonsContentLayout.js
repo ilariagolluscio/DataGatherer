@@ -1,4 +1,5 @@
 import {defaultBaseUrl} from "../../global_vars";
+import Navbar from "../../components/auth/Navbar";
 
 const TopButtons = ({handleCreate}) => {
     const baseUrl = process.env.REACT_APP_API_URL || defaultBaseUrl
@@ -32,6 +33,7 @@ const TopButtons = ({handleCreate}) => {
 const TitleTopButtonsContentLayout = ({title, topButtons, content}) => {
     return (
         <div>
+            <Navbar/>
             <div className={"h1 m-5"}>
                 {title}
             </div>

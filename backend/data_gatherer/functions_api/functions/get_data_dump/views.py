@@ -3,11 +3,15 @@ import io
 from django.core.management import call_command
 from django.http import HttpResponse
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
+# TODO da guardare
 
 class GetDataDumpApiView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
+
         with io.StringIO() as out:
             call_command('dumpdata', stdout=out)
             dump = out.getvalue()

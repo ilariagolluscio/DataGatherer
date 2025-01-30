@@ -22,7 +22,7 @@ class Hashtag(models.Model):
     )
 
     class Meta:
-        unique_together = ['project', 'content']
+        unique_together = ['project', 'content', 'author']
 
     def __str__(self):
         return "PRJ %s, #%s" % (self.project, self.content)
@@ -46,7 +46,6 @@ class IGUser(models.Model):
     )
     alias = models.CharField(
         max_length=300,
-        unique=True,
         null=True,
         blank=True
     )
@@ -59,7 +58,7 @@ class IGUser(models.Model):
         return "%s" % self.name
 
     class Meta:
-        unique_together = ['project', 'name']
+        unique_together = [['project', 'name'], ['alias','author']]
 
     def save(self, *args, **kwargs):
         if not self.alias:
@@ -93,4 +92,4 @@ class UserHashtagUse(models.Model):
     )
 
     class Meta:
-        unique_together = ['image', 'hashtag', 'igUser', 'project']
+        unique_together = ['image', 'hashtag', 'igUser', 'project', 'author']

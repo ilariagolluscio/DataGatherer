@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import *
 
@@ -11,6 +12,7 @@ from storage_api.models.image_models import ImgCrop, Image, ImgData
 class ExtendNetworkFromImageView(generics.CreateAPIView):
     queryset = []
     serializer_class = Serializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         ser = Serializer(data=request.data)

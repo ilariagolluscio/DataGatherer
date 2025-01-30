@@ -20,6 +20,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
+        read_only_fields = ['author']
         
 
 class ProjectDefaultCropSerializer(serializers.ModelSerializer):
@@ -27,3 +28,5 @@ class ProjectDefaultCropSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectDefaultCrop
         fields = '__all__'
+        read_only_fields = ['author']
+

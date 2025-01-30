@@ -6,7 +6,7 @@ import fetchImages from "../../queries/fetchImages";
 
 const Gallery = ({prjId, prjDataRefetch, showImages}) => {
 
-    const endpoint = `/storage_api/images/?project=${prjId}`
+    const endpoint = `/b/storage_api/images/?project=${prjId}`
 
     const { data, isError, error, isSuccess, isFetching} = useQuery({
         queryKey: ['get_scenario', {endpoint}],

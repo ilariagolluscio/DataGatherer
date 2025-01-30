@@ -1,7 +1,7 @@
 import Gallery from "../../components/gallery/Gallery";
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
-import fetchProject from "../../queries/fetchProject";
+import fetchProject from "../../queries/fetchProjectData";
 import {getBackupFile, getMatrixUrl, uploadUrl} from "../../api_router/fx_api";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
 import {gather_route} from "../data_gatering_page/DataGatheringPage";

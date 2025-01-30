@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import *
 from rest_framework.decorators import api_view
@@ -14,6 +15,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 
 class StreamCreateMatrixViewSet(generics.RetrieveAPIView):
     queryset = Project.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

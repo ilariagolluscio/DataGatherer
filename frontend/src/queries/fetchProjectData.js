@@ -2,14 +2,15 @@ import {defaultBaseUrl} from "../global_vars";
 import axios from 'axios';
 import getAuthAxiosConfig from "./common/getAuthAxiosConfig";
 
-const fetchProjects = async (prjId) => {
+const fetchProjectData = async (id) => {
+
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
 
     const response = await axios.get(
-        base + `/b/storage_api/images/?project=${prjId}`,
+        base + `/b/storage_api/projects/${id}/`,
         await getAuthAxiosConfig(),
     )
     return response.data
 }
 
-export default fetchProjects
+export default fetchProjectData

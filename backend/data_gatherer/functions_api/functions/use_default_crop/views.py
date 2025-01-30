@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import *
 from rest_framework.decorators import api_view
@@ -15,6 +16,7 @@ from storage_api.models.project_models import *
 class UseDefaultCropView(generics.CreateAPIView):
     queryset = []
     serializer_class = Serializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         ser = Serializer(data=request.data)

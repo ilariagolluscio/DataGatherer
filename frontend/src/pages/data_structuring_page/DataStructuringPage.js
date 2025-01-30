@@ -6,7 +6,7 @@ import {defaultBaseUrl} from "../../global_vars";
 import UsernameAnalysisCard from "../../components/analysis/UsenameAnalysisCard";
 import HashtagAnalysisGallery from "../../components/analysis/HashtagAnalysisGallery";
 import {useCookies} from "react-cookie";
-import fetchProject from "../../queries/fetchProject";
+import fetchProject from "../../queries/fetchProjectData";
 import HotButton from "../../components/hotstuff/HotButton";
 import {edit_route} from "../data_editing_page/DataEditingPage";
 import {gather_route} from "../data_gatering_page/DataGatheringPage";

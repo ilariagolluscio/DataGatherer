@@ -14,6 +14,8 @@ import DataEditingPage from "./pages/data_editing_page/DataEditingPage";
 import {useHotkeys} from "react-hotkeys-hook";
 import {useDispatch, useSelector} from "react-redux";
 import {keySetSelector, toggleKeySet} from "./slices/keyboardSlice";
+import LoginPage from "./pages/login_page/LoginPage";
+
 
 // Create a client
 const queryClient = new QueryClient()
@@ -45,6 +47,8 @@ function App() {
                         }/>
 
                         <Route path="/prj/:prjId/*" element={<ProjectOverviewPage/>}/>
+
+                        <Route path="/login" element={<LoginPage/>}/>
 
                         <Route path="/*" element={<HomePage/>}/>
 

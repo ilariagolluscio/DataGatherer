@@ -8,6 +8,8 @@ from functions_api.functions.extend_network_from_image.logic import extend_netwo
 from storage_api.models.data_models import *
 from storage_api.models.image_models import *
 from storage_api.models.project_models import *
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 import os
 pre_path = os.environ.get('TEST_PRE_PATH', default='')
@@ -15,10 +17,21 @@ pre_path = os.environ.get('TEST_PRE_PATH', default='')
 class ExtendNetworkFromImage(TestCase):
 
     def setUp(self):
+
+        self.author = User.objects.create_user(
+            username="test",
+            email="test@test.it",
+            password="test"
+        )
+
         from django.conf import settings
 
         self.project = Project.objects.create(
-            name='Test'
+            name='Test',
+            author=authenticate(
+                username="test",
+                password="test"
+            )
         )
 
         with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
@@ -29,7 +42,8 @@ class ExtendNetworkFromImage(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=self.author
             )
 
         with open(settings.TEST_MEDIA_ROOT + '/test_screenshot.png', 'rb') as infile:
@@ -40,7 +54,8 @@ class ExtendNetworkFromImage(TestCase):
                 isDataGathered=False,
                 project=self.project,
                 average_hash=None,
-                isSimilarTo=None
+                isSimilarTo=None,
+                author=self.author
             )
 
     def tearDown(self):

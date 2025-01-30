@@ -1,12 +1,14 @@
 import {defaultBaseUrl} from "../global_vars";
 import axios from 'axios';
+import getAuthAxiosConfig from "./common/getAuthAxiosConfig";
 
 const fetchRecognizedTextFromImage = async (imgId, fieldName) => {
 
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
 
     const {data} = await axios.get(
-        base + `/storage_api/img_crops/?image=${imgId}&fieldName=${fieldName}`,
+        base + `/b/storage_api/img_crops/?image=${imgId}&fieldName=${fieldName}`,
+        await getAuthAxiosConfig(),
     )
 
     if (!Array.isArray(data)){
