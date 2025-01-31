@@ -15,6 +15,7 @@ import {useHotkeys} from "react-hotkeys-hook";
 import {useDispatch, useSelector} from "react-redux";
 import {keySetSelector, toggleKeySet} from "./slices/keyboardSlice";
 import LoginPage from "./pages/login_page/LoginPage";
+import UploadPage from "./pages/upload_page/UploadPage";
 
 
 // Create a client
@@ -47,6 +48,8 @@ function App() {
                         }/>
 
                         <Route path="/prj/:prjId/*" element={<ProjectOverviewPage/>}/>
+
+                        <Route path="/upload/:prjId/" element={<UploadPage/>}/>
 
                         <Route path="/login" element={<LoginPage/>}/>
 
