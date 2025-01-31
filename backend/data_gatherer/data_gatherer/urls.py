@@ -40,6 +40,7 @@ token_urlpatterns = [
 ]
 
 public_paths = [
+    path('fx_api/', include(fx_urls)), # TODO to be changed!!!!!!
     path('admin/', global_admin_site.urls),
     path('token/', include(token_urlpatterns)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
