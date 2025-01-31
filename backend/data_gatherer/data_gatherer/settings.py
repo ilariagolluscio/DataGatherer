@@ -30,12 +30,20 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default='127.0.0.1 localh
 
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS',
                                       default='http://localhost:3000 http://127.0.0.1:3000').split(" ")
+
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
 CORS_ALLOW_HEADERS = [
+    'Files',
     'Accept',
     'Accept-Encoding',
     'Authorization',
     'Content-Type',
+    'X-CSRFToken'
 ]
+
+CSRF_HEADER_NAME = "X-CSRFToken"
+
 
 CORS_ALLOW_METHODS = [
     'GET',
@@ -81,7 +89,7 @@ ROOT_URLCONF = 'data_gatherer.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
@@ -101,6 +109,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'data_gatherer.wsgi.application'
 
