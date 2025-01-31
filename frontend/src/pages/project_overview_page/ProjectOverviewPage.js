@@ -2,10 +2,11 @@ import Gallery from "../../components/gallery/Gallery";
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import fetchProject from "../../queries/fetchProjectData";
-import {getBackupFile, getMatrixUrl, uploadUrl} from "../../api_router/fx_api";
+import {getBackupFile, getMatrixUrl} from "../../api_router/fx_api";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
 import {gather_route} from "../data_gatering_page/DataGatheringPage";
 import {useState} from "react";
+import {upload_route} from "../upload_page/UploadPage";
 
 
 export const overview_route =  (prjId) => `/prj/${prjId}/`
@@ -28,7 +29,6 @@ const ProjectOverviewPage = () => {
     const { prjId } = useParams();
 
     const [showImages, setShowImages] = useState(false)
-
 
     const {
         data: projectData,
@@ -63,7 +63,7 @@ const ProjectOverviewPage = () => {
                 </div>,
 
                 <div className={"m-2"}>
-                    <a href={uploadUrl()} className="btn btn-primary mx-1">Carica immagini in un progetto</a>
+                    <a href={upload_route(prjId)} className="btn btn-primary mx-1">Carica immagini in un progetto</a>
                 </div>,
 
 
@@ -90,13 +90,6 @@ const ProjectOverviewPage = () => {
 
             content={
                 <div>
-
-                    <div className={'my-3 alert alert-info p-1'}>
-                        Per assegnare tasti della tastiera ai tasti premibili, usare la combinazione ctrl+k su windows
-                        e control+k su mac. E' una funzione sperimentale che crea problemi. Per eliminare tutte le
-                        associazioni
-                        tasto - tastiera, eliminare i cookies della pagina e ricaricare.
-                    </div>
 
                     <Gallery prjDataRefetch={projectDataRefetch} prjId={prjId} showImages={showImages}/>
 
