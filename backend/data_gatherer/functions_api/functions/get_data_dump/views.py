@@ -3,12 +3,13 @@ import io
 from django.core.management import call_command
 from django.http import HttpResponse
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 # TODO da guardare
 
 class GetDataDumpApiView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def list(self, request, *args, **kwargs):
 
