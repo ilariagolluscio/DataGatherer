@@ -1,5 +1,6 @@
 import {useRef} from "react";
 import {useCookies} from "react-cookie";
+import Navbar from "../../components/auth/Navbar";
 
 const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, imageUserId}) => {
 
@@ -21,6 +22,7 @@ const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, i
 
     return (
         <div>
+            <Navbar/>
             {
                 imageUserId ?
                     <h1>
@@ -35,7 +37,7 @@ const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, i
                 <div
                     style={{
                         marginRight: "10px",
-                        height: "80vh",
+                        height: "78vh",
                     }}
                     className={"px-5"}
                 >
@@ -56,7 +58,7 @@ const SingleImgAnalysisLayout = ({leftChildren, rightChildren, bottomChildren, i
                 </div>
 
 
-                <div style={{width: "100%", height: "80vh"}} className={"p-5"}>
+                <div style={{width: "100%", height: "78vh"}} className={"p-5"}>
                     <div className={"h-100 overflow-y-scroll"}>
                         <div>
                             {rightChildren}
