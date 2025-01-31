@@ -15,6 +15,8 @@ export default async function getAuthAxiosConfig() {
 
     let token = cookies.get("access")
     let refresh = cookies.get("refresh")
+    const csrftoken = cookies.get('csrftoken')
+
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
 
     if (token === undefined) {
@@ -36,6 +38,9 @@ export default async function getAuthAxiosConfig() {
         })
         cookies.set('access', refresh_response.data.access)
     })
+
+    cookies.remove('current')
+
 
     return {
         headers: {
