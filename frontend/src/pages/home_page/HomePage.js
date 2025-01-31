@@ -5,7 +5,7 @@ import {deleteProject} from "../../queries/deleteProject";
 import {createProject} from "../../queries/createProject";
 import {defaultBaseUrl} from "../../global_vars";
 import TitleTopButtonsContentLayout from "../../layouts/title_topbuttons_content_layout/TitleTopButtonsContentLayout";
-import {adminUrl, uploadUrl} from "../../api_router/fx_api";
+import {adminUrl} from "../../api_router/fx_api";
 import {overview_route} from "../project_overview_page/ProjectOverviewPage";
 
 
@@ -78,10 +78,6 @@ const HomePage = () => {
             topButtons={[
                     <div className={"m-2"}>
                         <button className="btn btn-success" onClick={handleCreate}>Crea nuovo progetto</button>
-                    </div>,
-
-                    <div className={"m-2"}>
-                        <a href={uploadUrl()} className="btn btn-primary mx-1">Carica immagini in un progetto</a>
                     </div>,
 
                     <div className={"m-2"}>
