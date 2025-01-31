@@ -22,7 +22,10 @@ const ImageBox = ({showImage, prjDataRefetch, userId, isDataGathered, imageFileU
             mainRef.current.style.display = "none"
             prjDataRefetch()
         },
-        onError: (error) => alert("Errore di connessione: " + error.message)
+        onError: (error) => {
+            alert("Errore di connessione: " + error.message)
+            console.log(error)
+        }
     })
 
     let base = process.env.REACT_APP_API_URL || defaultBaseUrl
@@ -64,7 +67,7 @@ const ImageBox = ({showImage, prjDataRefetch, userId, isDataGathered, imageFileU
                         className="btn btn-primary m-2" >ANYZ
                     </button>
 
-                    <button href="#" className="btn btn-danger m-2" onClick={handleDeleteImage}>DEL</button>
+                    <button href="#"  disabled={isDataGathered} className="btn btn-danger m-2" onClick={handleDeleteImage}>DEL</button>
                 </div>
 
                 {
