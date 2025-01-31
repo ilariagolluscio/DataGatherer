@@ -16,6 +16,9 @@ class UserMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if "X-CSRFToken" in request.headers:
+            print(request.headers["X-CSRFToken"])
+
         path: str = request.META["PATH_INFO"][1:]
         user = request.user if request.user is not None else AnonymousUser
         try:
@@ -25,15 +28,18 @@ class UserMiddleware:
             auth_response = None
         if auth_response is not None:
             user, token = auth_response
+            request.user = user
 
-        #if (not user.is_authenticated) and (not path.startswith(settings.PUBLIC_PATH_STARTS_WITH)):
-        #    print("middleware blocked.")
-        #    response = Response(
-        #        status=status.HTTP_403_FORBIDDEN
-        #    )
-        #    response.accepted_renderer = JSONRenderer()
-        #    response.accepted_media_type = "application/json"
-        #    response.renderer_context = {}
-        #    response.render()
-        #    return response
+        #aaaaaaaaaaaaaaaa
+
+        if (not user.is_authenticated) and (not path.startswith(settings.PUBLIC_PATH_STARTS_WITH)) and (not path.startswith("media")):
+            print("middleware blocked.")
+            response = Response(
+                status=status.HTTP_403_FORBIDDEN
+            )
+            response.accepted_renderer = JSONRenderer()
+            response.accepted_media_type = "application/json"
+            response.renderer_context = {}
+            response.render()
+            return response
         return self.get_response(request)
