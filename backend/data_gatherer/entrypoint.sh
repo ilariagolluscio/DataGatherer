@@ -17,7 +17,7 @@ fi
 
 
 python manage.py migrate || exit
-python manage.py test || exit
+python manage.py test --noinput || exit
 python manage.py collectstatic --noinput
 python manage.py createsuperuser --noinput
 
