@@ -2,8 +2,7 @@ import hashlib
 import PIL
 from PIL import Image
 import numpy as np
-import imagehash
-import numpy as np
+from django.contrib.auth.models import User
 
 
 def average_hash(image_path, hash_size=25):
@@ -87,7 +86,7 @@ def check_similarity_between_project_images(project, images_to_check):
                 continue
 
 
-def upload_files(files, project):
+def upload_files(files, project, user:User):
     from storage_api.models.image_models import Image as ModelImage
     images_to_check = []
     for file in files:
@@ -98,7 +97,8 @@ def upload_files(files, project):
         image = ModelImage(
             file=file,
             userId=value,
-            project=project
+            project=project,
+            author=user
         )
         image.save()
         images_to_check.append(image)
