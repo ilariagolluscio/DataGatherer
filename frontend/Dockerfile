@@ -15,3 +15,5 @@ COPY package-lock.json ./
 COPY build ./build
 
 COPY  .env.production ./.env
+
+RUN npm install
