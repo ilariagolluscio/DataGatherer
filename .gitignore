@@ -4,5 +4,3 @@
 /frontend/.env
 /backend/data_gatherer/.env
 /backend/data_gatherer/db.sqlite3
-
-
