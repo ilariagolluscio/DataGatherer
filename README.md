@@ -39,7 +39,7 @@ where weight = in how many posts a user has used the hashtag?
 1. Clone the repository
 2. execute `docker compose build`
 3. if everything, goes well, execute `docker compose up`
-4. goto page `http://127.0.0.1:8080` and use the application
+4. goto page `http://127.0.0.1:8080/login` and use the application
 
 ## How to access entity admin page?
 
